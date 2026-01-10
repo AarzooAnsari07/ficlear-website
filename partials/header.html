@@ -23,7 +23,7 @@
         </a>
         <a href="/LoanEligibility" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive text-white h-9 px-4 py-2 has-[&gt;svg]:px-3 bg-blue-600 hover:bg-blue-700 font-semibold shadow-sm">Apply with Expert</a>
       </div>
-      <button class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+      <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6 text-gray-700">
           <line x1="4" x2="20" y1="12" y2="12"></line>
           <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -31,5 +31,41 @@
         </svg>
       </button>
     </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden mt-4 pb-4 border-t border-gray-200 pt-4">
+      <div class="space-y-2">
+        <a href="/" class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900">Home</a>
+        <a href="/LiveOffers" class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900">Live Offers</a>
+        <a href="/LoanEligibility" class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900">Loan Eligibility</a>
+        <a href="/CompanyChecker" class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900">Company Checker</a>
+        <a href="/PINCodeChecker" class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900">PIN Code Checker</a>
+        <a href="/PolicyDetails" class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900">Policy Details</a>
+        <div class="border-t border-gray-200 pt-4 mt-4 space-y-2">
+          <a href="/AdminLogin" class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">Admin</a>
+          <a href="/LoanEligibility" class="block px-3 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700">Apply with Expert</a>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var menuBtn = document.getElementById('mobile-menu-btn');
+  var mobileMenu = document.getElementById('mobile-menu');
+  
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Close menu when clicking on a link
+    var menuLinks = mobileMenu.querySelectorAll('a');
+    menuLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  }
+});
+</script>
