@@ -4,6 +4,10 @@
     {
       "src": "server/server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -12,8 +16,16 @@
       "dest": "server/server.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/(.*\\.[a-zA-Z0-9]+)$",
       "dest": "/$1"
+    },
+    {
+      "src": "/(.*)/?$",
+      "dest": "/index.html"
     }
-  ]
+  ],
+  "ignoreCommand": "git check-ignore -q $FILE",
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
