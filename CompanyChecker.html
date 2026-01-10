@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Company Checker - FiClear</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" crossorigin="" href="/assets/index-C7ZxKpI8.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white min-h-screen">
+    <div id="root">
+      <div id="site-header"></div>
+
+    <!-- HERO SECTION -->
+    <div class="bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50 py-16">
+      <div class="max-w-5xl mx-auto px-4 text-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full mb-6 text-sm font-medium">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+          </svg>
+          Trusted by 10,000+ users
+        </div>
+
+        <!-- Main Heading -->
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+          Company Category
+        </h1>
+        <h2 class="text-4xl md:text-5xl font-bold text-blue-600 mb-4">
+          Checker
+        </h2>
+
+        <!-- Subtitle -->
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-10">
+          Check company listing & category across multiple banks instantly. Verify your company's eligibility status in seconds.
+        </p>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-6 md:gap-8 max-w-2xl mx-auto">
+          <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div class="text-2xl md:text-3xl font-bold text-blue-600">10,000+</div>
+            <div class="text-sm text-gray-600 mt-1">Companies</div>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div class="text-2xl md:text-3xl font-bold text-blue-600">50+</div>
+            <div class="text-sm text-gray-600 mt-1">Banks</div>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+            <div class="text-2xl md:text-3xl font-bold text-blue-600">100%</div>
+            <div class="text-sm text-gray-600 mt-1">Accurate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-4 py-12">
+
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-8 relative">
+          <!-- Search Tabs -->
+          <div class="flex gap-6 mb-6 border-b border-gray-200">
+            <button class="search-tab pb-3 text-blue-600 font-medium flex items-center gap-2 border-b-2 border-blue-600 active" data-tab="name">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              Search by Name
+            </button>
+          </div>
+
+          <!-- Search Input -->
+          <div class="relative">
+            <div class="flex gap-3 items-center">
+              <div class="relative flex-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </svg>
+                <input id="company-input" class="pl-10 h-12 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full bg-white" placeholder="Enter company name (e.g., Infosys)" />
+              </div>
+              <button id="company-search" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 transition-all shadow-md hover:shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mb-8">
+          <h3 class="text-lg font-semibold text-gray-900 mb-6">Quick Search - Sample Companies</h3>
+          <div class="flex flex-wrap justify-center gap-3">
+            <button class="popular-chip border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-blue-50 hover:border-blue-400 transition">Infosys</button>
+            <button class="popular-chip border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-blue-50 hover:border-blue-400 transition">Reliance</button>
+            <button class="popular-chip border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-blue-50 hover:border-blue-400 transition">Small Tech</button>
+            <button class="popular-chip border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-blue-50 hover:border-blue-400 transition">Fintech Startup</button>
+          </div>
+        </div>
+
+        <!-- Results Container -->
+        <div class="border-dashed border-2 border-gray-300 rounded-2xl p-8 mt-12"></div>
+      </div>
+
+    </main>
+
+      <!-- FEATURES SECTION -->
+      <div class="bg-gray-50 border-t border-gray-200 py-12 mt-12">
+        <div class="max-w-5xl mx-auto px-4">
+          <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+            <div class="flex items-center gap-3">
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              <span class="text-sm text-gray-700 font-medium">Real-time verification</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span class="text-sm text-gray-700 font-medium">Updated daily</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+              <span class="text-sm text-gray-700 font-medium">50+ banks covered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="site-footer"></div>
+    </div>
+    <script src="assets/include-header-footer.js"></script>
+    <script>
+      (function(){
+        function qs(s){return document.querySelector(s);} 
+        function qsa(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+
+        var demoCompanies = {
+          'small tech': {
+            name: 'SMALL TECH SOLUTIONS PVT LTD',
+            type: 'Private Limited Company',
+            status: 'Active',
+            cin: 'U74999KA2010PTC096843',
+            incorporated: '15 Mar 2010',
+            authorizedCapital: '₹10 Lakh',
+            paidUpCapital: '₹5 Lakh',
+            registeredOffice: 'HSR Layout, Bangalore - 560102',
+            banks: [
+              { bank: 'HDFC Bank', category: 'Basic Category', cat: 'CAT C', approved: true },
+              { bank: 'ICICI Bank', category: 'Not Approved', cat: 'CAT D', approved: false },
+              { bank: 'SBI', category: 'Basic Category', cat: 'CAT C', approved: true },
+              { bank: 'Axis Bank', category: 'Under Review', cat: 'CAT D', approved: false },
+              { bank: 'Kotak Bank', category: 'Basic Category', cat: 'CAT C', approved: true },
+              { bank: 'Yes Bank', category: 'Not Approved', cat: 'CAT D', approved: false }
+            ]
+          },
+          'infosys': {
+            name: 'INFOSYS LIMITED',
+            type: 'Public Limited Company',
+            status: 'Active',
+            cin: 'L85290MH1981PLC041149',
+            incorporated: '02 Jul 1981',
+            authorizedCapital: '₹1,000 Crore',
+            paidUpCapital: '₹402.50 Crore',
+            registeredOffice: 'Electronic City, Bangalore - 560100',
+            banks: [
+              { bank: 'HDFC Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'ICICI Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'SBI', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'Axis Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'Kotak Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'IDBI Bank', category: 'Premium Category', cat: 'CAT A', approved: true }
+            ]
+          },
+          'reliance': {
+            name: 'RELIANCE INDUSTRIES LIMITED',
+            type: 'Public Limited Company',
+            status: 'Active',
+            cin: 'L17110MH1957PLC060024',
+            incorporated: '09 Nov 1957',
+            authorizedCapital: '₹5,000 Crore',
+            paidUpCapital: '₹1,000 Crore',
+            registeredOffice: '3-N, Midtown, Navi Mumbai - 400614',
+            banks: [
+              { bank: 'HDFC Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'ICICI Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'SBI', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'Axis Bank', category: 'Premium Category', cat: 'CAT A', approved: true },
+              { bank: 'Kotak Bank', category: 'Standard Category', cat: 'CAT B', approved: true },
+              { bank: 'YES Bank', category: 'Standard Category', cat: 'CAT B', approved: true }
+            ]
+          },
+          'fintech startup': {
+            name: 'FINTECH INNOVATIONS PVT LTD',
+            type: 'Private Limited Company',
+            status: 'Active',
+            cin: 'U74999KA2015PTC095421',
+            incorporated: '22 Aug 2015',
+            authorizedCapital: '₹50 Lakh',
+            paidUpCapital: '₹25 Lakh',
+            registeredOffice: 'Koramangala, Bangalore - 560034',
+            banks: [
+              { bank: 'HDFC Bank', category: 'Startup Category', cat: 'CAT D', approved: true },
+              { bank: 'ICICI Bank', category: 'Not Approved', cat: 'CAT D', approved: false },
+              { bank: 'SBI', category: 'Startup Category', cat: 'CAT D', approved: true },
+              { bank: 'Axis Bank', category: 'Not Approved', cat: 'CAT D', approved: false },
+              { bank: 'Kotak Bank', category: 'Startup Category', cat: 'CAT D', approved: true },
+              { bank: 'IDFC First Bank', category: 'Startup Category', cat: 'CAT D', approved: true }
+            ]
+          }
+        };
+
+        function renderBankCard(bank) {
+          var bgColor = bank.approved ? 'from-green-50 to-white border-green-200' : 'from-red-50 to-white border-red-200';
+          var statusIcon = bank.approved 
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-600"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-red-600"><path d="M18 6l-12 12M6 6l12 12"></path></svg>';
+          var statusText = bank.approved ? '<span class="text-green-600 font-medium">Listed</span>' : '<span class="text-red-600 font-medium">Not Listed</span>';
+          var catBg = bank.approved ? 'bg-green-100 text-green-700 border-green-300' : 'bg-red-100 text-red-700 border-red-300';
+          
+          return '<div class="bg-gradient-to-br ' + bgColor + ' rounded-xl border p-6 hover:shadow-lg transition">'
+            + '<div class="flex items-start justify-between mb-4">'
+            + '<div>'
+            + '<h3 class="font-semibold text-gray-900">' + bank.bank + '</h3>'
+            + '<p class="text-xs text-gray-600">' + bank.category + '</p>'
+            + '</div>'
+            + '<div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center border border-blue-200">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-600"><path d="M10 18v-7"></path><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"></path><path d="M14 18v-7"></path><path d="M18 18v-7"></path><path d="M3 22h18"></path><path d="M6 18v-7"></path></svg>'
+            + '</div>'
+            + '</div>'
+            + '<span class="inline-block px-3 py-1 rounded-full text-xs font-semibold border ' + catBg + ' mb-4">' + bank.cat + '</span>'
+            + '<div class="flex items-center gap-2">'
+            + statusIcon
+            + statusText
+            + '</div>'
+            + '</div>';
+        }
+
+        function renderCompanyResults(company) {
+          var placeholder = qs('.border-dashed');
+          if (!placeholder) return;
+
+          var html = '';
+          
+          // Company Header Card
+          html += '<div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6 mb-8">'
+            + '<div class="flex items-start justify-between mb-6">'
+            + '<div class="flex items-start gap-4">'
+            + '<div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center border border-blue-200">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-600"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>'
+            + '</div>'
+            + '<div>'
+            + '<h2 class="text-2xl font-bold text-gray-900">' + company.name + '</h2>'
+            + '<p class="text-gray-600">' + company.type + '</p>'
+            + '</div>'
+            + '</div>'
+            + '<span class="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full font-medium">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M20 6L9 17l-5-5"></path></svg>'
+            + 'Active'
+            + '</span>'
+            + '</div>'
+            + '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">'
+            + '<div class="flex items-start gap-3 py-2 border-b border-gray-200">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>'
+            + '<div>'
+            + '<p class="text-xs text-gray-600">CIN Number</p>'
+            + '<p class="font-mono font-semibold text-gray-900">' + company.cin + '</p>'
+            + '</div>'
+            + '</div>'
+            + '<div class="flex items-start gap-3 py-2 border-b border-gray-200">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>'
+            + '<div>'
+            + '<p class="text-xs text-gray-600">Incorporation Date</p>'
+            + '<p class="font-semibold text-gray-900">' + company.incorporated + '</p>'
+            + '</div>'
+            + '</div>'
+            + '<div class="flex items-start gap-3 py-2 border-b border-gray-200">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path></svg>'
+            + '<div>'
+            + '<p class="text-xs text-gray-600">Authorized Capital</p>'
+            + '<p class="font-semibold text-gray-900">' + company.authorizedCapital + '</p>'
+            + '</div>'
+            + '</div>'
+            + '<div class="flex items-start gap-3 py-2 border-b border-gray-200">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path></svg>'
+            + '<div>'
+            + '<p class="text-xs text-gray-600">Paid Up Capital</p>'
+            + '<p class="font-semibold text-gray-900">' + company.paidUpCapital + '</p>'
+            + '</div>'
+            + '</div>'
+            + '<div class="flex items-start gap-3 py-2 border-b border-gray-200 lg:col-span-2">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>'
+            + '<div>'
+            + '<p class="text-xs text-gray-600">Registered Office</p>'
+            + '<p class="font-semibold text-gray-900">' + company.registeredOffice + '</p>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>';
+
+          // Bank-wise Category Section
+          html += '<div class="mb-8">'
+            + '<h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-600"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18z"></path></svg>'
+            + 'Bank-wise Category (' + company.banks.length + ' Banks)'
+            + '</h3>'
+            + '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">';
+          
+          company.banks.forEach(function(bank) {
+            html += renderBankCard(bank);
+          });
+          
+          html += '</div>'
+            + '</div>';
+
+          placeholder.classList.remove('border-dashed', 'border-2');
+          placeholder.innerHTML = html;
+        }
+
+        function escapeHtml(s){ return (s+'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+
+        async function onSearch(){
+          var v = (qs('#company-input').value || '').trim();
+          if(!v) { qs('#company-input').focus(); return; }
+          
+          var placeholder = qs('.border-dashed');
+          if(placeholder) placeholder.innerHTML = '<div class="p-12 text-center text-gray-600">Loading company details…</div>';
+          
+          setTimeout(function() {
+            var company = demoCompanies[v.toLowerCase()];
+            if(company) {
+              renderCompanyResults(company);
+            } else {
+              placeholder.classList.remove('border-dashed', 'border-2');
+              placeholder.innerHTML = '<div class="p-12 text-center">'
+                + '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 mx-auto text-gray-400 mb-4"><path d="m21 21-4.3-4.3"></path><circle cx="11" cy="11" r="8"></circle></svg>'
+                + '<h3 class="text-xl font-semibold text-gray-900 mb-2">No results found</h3>'
+                + '<p class="text-gray-600">Try searching for: Small Tech, Infosys, Reliance, or Fintech Startup</p>'
+                + '</div>';
+            }
+          }, 800);
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+          qs('#company-search').addEventListener('click', onSearch);
+          qs('#company-input').addEventListener('keydown', function(e){ if(e.key === 'Enter') onSearch(); });
+          qsa('.popular-chip').forEach(function(b){ b.addEventListener('click', function(){ qs('#company-input').value = b.textContent.trim(); onSearch(); }); });
+        });
+      })();
+    </script>
+  </body>
+</html>

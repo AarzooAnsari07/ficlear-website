@@ -1,0 +1,34 @@
+[
+  {
+    "id": "b1",
+    "bank": "Bank A",
+    "interestRate": 9.5,
+    "minCibil": 700,
+    "minSalary": 15000,
+    "logo": "assets/bank-a.png"
+  },
+  {
+    "id": "b2",
+    "bank": "Bank B",
+    "interestRate": 11.0,
+    "minCibil": 650,
+    "minSalary": 10000,
+    "logo": "assets/bank-b.png"
+  },
+  {
+    "id": "b3",
+    "bank": "NBFC C",
+    "interestRate": 13.5,
+    "minCibil": 600,
+    "minSalary": 8000,
+    "logo": "assets/nbfc-c.png"
+  },
+  {
+    "id": "b4",
+    "bank": "Premium Bank",
+    "interestRate": 8.5,
+    "minCibil": 750,
+    "minSalary": 25000,
+    "logo": "assets/premium.png"
+  }
+]

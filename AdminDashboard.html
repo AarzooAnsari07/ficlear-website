@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiClear Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, #f0f4f8 0%, #f8fafc 100%);
+            border-right: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        .sidebar.collapsed .sidebar-text {
+            display: none;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 4px 8px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .sidebar-link:hover {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe;
+            color: #0284c7;
+            font-weight: 600;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border-left: 4px solid;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .stat-card.blue {
+            border-left-color: #3b82f6;
+        }
+        .stat-card.green {
+            border-left-color: #10b981;
+        }
+        .stat-card.orange {
+            border-left-color: #f97316;
+        }
+        .stat-card.purple {
+            border-left-color: #8b5cf6;
+        }
+        .quick-action {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .quick-action:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
+        .quick-action-icon {
+            width: 48px;
+            height: 48px;
+            background: #f0f4f8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .quick-action.companies .quick-action-icon { background: #dbeafe; color: #1e40af; }
+        .quick-action.pincode .quick-action-icon { background: #dcfce7; color: #166534; }
+        .quick-action.banks .quick-action-icon { background: #fef3c7; color: #b45309; }
+        .quick-action.offers .quick-action-icon { background: #fecdd3; color: #be185d; }
+        .quick-action.policies .quick-action-icon { background: #e9d5ff; color: #7e22ce; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <div class="sidebar overflow-y-auto">
+            <div class="p-6 border-b border-gray-200 relative">
+                <button id="toggleSidebar" class="absolute top-4 right-3 text-gray-500 hover:text-gray-800 text-xl leading-none">
+                    ☰
+                </button>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="8" y2="13"></line><line x1="12" y1="17" x2="8" y2="17"></line></svg>
+                    </div>
+                    <div class="sidebar-text">
+                        <h2 class="text-gray-900 font-bold text-lg">FiClear</h2>
+                        <p class="text-xs text-gray-600">Admin Panel</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="mt-6 pb-20">
+                <div class="px-4 pb-2">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider sidebar-text">MAIN</p>
+                </div>
+                <div class="sidebar-link active" data-tab="overview">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="12" rx="1"></rect></svg>
+                    <span class="sidebar-text">Overview</span>
+                </div>
+
+                <div class="px-4 pb-2 pt-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider sidebar-text">MANAGEMENT</p>
+                </div>
+                <div class="sidebar-link" data-tab="companies">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    <span class="sidebar-text">Companies</span>
+                </div>
+                <div class="sidebar-link" data-tab="pincodes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span class="sidebar-text">PIN Codes</span>
+                </div>
+                <div class="sidebar-link" data-tab="banks">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="4" rx="1"></rect><path d="M4 12v4"></path><path d="M20 12v4"></path><path d="M2 20h20"></path></svg>
+                    <span class="sidebar-text">Banks</span>
+                </div>
+                <div class="sidebar-link" data-tab="offers">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect width="20" height="5" x="2" y="7"></rect><path d="M12 22v-7"></path><path d="M7 7c0-1.25.756-2.309 2-2.763A2 2 0 1 1 7 7"></path><path d="M17 7c0-1.25-.756-2.309-2-2.763A2 2 0 1 0 17 7"></path></svg>
+                    <span class="sidebar-text">Live Offers</span>
+                </div>
+                <div class="sidebar-link" data-tab="policies">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11H5m14 0a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9m0 0a2 2 0 00-2 2v3a2 2 0 002 2h14"></path></svg>
+                    <span class="sidebar-text">Policy Details</span>
+                </div>
+
+                <div class="px-4 pb-2 pt-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider sidebar-text">SYSTEM</p>
+                </div>
+                <div class="sidebar-link" data-tab="database">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14a9 3 0 0 0 9 3 9 3 0 0 0 9-3V5"></path><ellipse cx="3" cy="12" rx="9" ry="3"></ellipse></svg>
+                    <span class="sidebar-text">Database Settings</span>
+                </div>
+                <div class="sidebar-link" data-tab="settings">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"></path></svg>
+                    <span class="sidebar-text">Settings</span>
+                </div>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 right-0 p-4" style="width: 260px;">
+                <button id="logout-btn" class="w-full flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Bar -->
+            <div class="bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900" id="page-title">Dashboard Overview</h1>
+                    <p class="text-sm text-gray-600 mt-1" id="page-subtitle">Monitor and manage your FiClear platform</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="top-action-btn" class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>Add</span>
+                    </button>
+                    <div class="text-sm">
+                        <p class="text-gray-600 text-xs">Logged in as</p>
+                        <p class="font-semibold text-gray-900" id="admin-name">Admin</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                        A
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-auto p-8">
+                <!-- Overview Tab -->
+                <div id="overview" class="content-section active">
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="stat-card blue">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gray-600 text-sm font-medium">Total Companies</p>
+                                    <p class="text-4xl font-bold text-gray-900 mt-2">0</p>
+                                    <p class="text-xs text-gray-500 mt-2">+0 this week</p>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card green">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gray-600 text-sm font-medium">Total PIN Codes</p>
+                                    <p class="text-4xl font-bold text-gray-900 mt-2">0</p>
+                                    <p class="text-xs text-gray-500 mt-2">No change</p>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card orange">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gray-600 text-sm font-medium">Active Offers</p>
+                                    <p class="text-4xl font-bold text-gray-900 mt-2">0</p>
+                                    <p class="text-xs text-gray-500 mt-2">+0 this week</p>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect width="20" height="5" x="2" y="7"></rect><path d="M12 22v-7"></path></svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card purple">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gray-600 text-sm font-medium">Total Banks</p>
+                                    <p class="text-4xl font-bold text-gray-900 mt-2">0</p>
+                                    <p class="text-xs text-gray-500 mt-2">No change</p>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="4" rx="1"></rect><path d="M4 12v4"></path><path d="M20 12v4"></path><path d="M2 20h20"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="quick-action companies" onclick="switchTab('companies')">
+                                <div class="quick-action-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Manage Companies</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Add or edit company data</p>
+                                </div>
+                            </div>
+
+                            <div class="quick-action pincode" onclick="switchTab('pincodes')">
+                                <div class="quick-action-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Manage PIN Codes</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Update PIN code categories</p>
+                                </div>
+                            </div>
+
+                            <div class="quick-action banks" onclick="switchTab('banks')">
+                                <div class="quick-action-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="8" x="2" y="4" rx="1"></rect><path d="M4 12v4"></path><path d="M20 12v4"></path><path d="M2 20h20"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Manage Banks</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Add or edit bank data</p>
+                                </div>
+                            </div>
+
+                            <div class="quick-action offers" onclick="switchTab('offers')">
+                                <div class="quick-action-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect width="20" height="5" x="2" y="7"></rect><path d="M12 22v-7"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Update Offers</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Manage bank offers</p>
+                                </div>
+                            </div>
+
+                            <div class="quick-action policies" onclick="switchTab('policies')">
+                                <div class="quick-action-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="8" y2="13"></line><line x1="12" y1="17" x2="8" y2="17"></line></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Edit Policies</h3>
+                                    <p class="text-sm text-gray-600 mt-1">Update policy details</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="mt-10 bg-white rounded-xl p-6 shadow-md">
+                        <h3 class="font-bold text-gray-900 mb-4 text-lg">Recent Activity</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-center gap-3">
+                                <span class="text-green-600">✅</span>
+                                <span>Bank "HDFC" added - 2 hours ago</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-blue-600">📍</span>
+                                <span>PIN Code 110001 updated - 5 hours ago</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-purple-600">🏢</span>
+                                <span>Company Infosys edited - 1 day ago</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="text-orange-600">🎁</span>
+                                <span>New offer created for SBI - 2 days ago</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Companies Tab -->
+                <div id="companies" class="content-section">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-900">Companies Management</h2>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">+ Add Company</button>
+                        </div>
+                        
+                        <!-- Search & Filter -->
+                        <div class="flex flex-col md:flex-row gap-3 mb-6">
+                            <input type="text" placeholder="Search company..." class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <select class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                <option>All Categories</option>
+                                <option>Listed</option>
+                                <option>Unlisted</option>
+                                <option>Private</option>
+                            </select>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div class="text-center py-16">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076503.png" alt="No companies" class="w-24 mx-auto mb-4 opacity-70">
+                            <p class="text-gray-500 mb-4 text-lg">No companies added yet</p>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">+ Add First Company</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIN Codes Tab -->
+                <div id="pincodes" class="content-section">
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-900">PIN Code Management</h2>
+                            <button onclick="openPinModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                                + Add PIN
+                            </button>
+                        </div>
+
+                        <input id="pinSearch" onkeyup="renderPins()" placeholder="Search PIN code..." class="border border-gray-300 rounded-lg px-4 py-2 mb-6 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+
+                        <div id="pinList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+                </div>
+
+                <!-- Banks Tab -->
+                <div id="banks" class="content-section">
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-900">Banks Management</h2>
+                            <button onclick="openBankModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                                + Add Bank
+                            </button>
+                        </div>
+
+                        <!-- Search -->
+                        <input id="bankSearch" onkeyup="renderBanks()" placeholder="Search bank..." class="border border-gray-300 rounded-lg px-4 py-2 mb-6 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+
+                        <!-- Bank Cards -->
+                        <div id="bankList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+                    </div>
+                </div>
+
+                <!-- Offers Tab -->
+                <div id="offers" class="content-section">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-900">Live Offers</h2>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">+ Create Offer</button>
+                        </div>
+
+                        <!-- Search & Filter -->
+                        <div class="flex flex-col md:flex-row gap-3 mb-6">
+                            <input type="text" placeholder="Search offers..." class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <select class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                <option>All Status</option>
+                                <option>Active</option>
+                                <option>Expired</option>
+                                <option>Draft</option>
+                            </select>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div class="text-center py-16">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4436/4436481.png" alt="No offers" class="w-24 mx-auto mb-4 opacity-70">
+                            <p class="text-gray-500 mb-4 text-lg">No offers created yet</p>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">+ Create First Offer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Policies Tab -->
+                <div id="policies" class="content-section">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-900">Policy Details</h2>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">+ Add Policy</button>
+                        </div>
+
+                        <!-- Search & Filter -->
+                        <div class="flex flex-col md:flex-row gap-3 mb-6">
+                            <input type="text" placeholder="Search policies..." class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <select class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                <option>All Policies</option>
+                                <option>Active</option>
+                                <option>Archived</option>
+                                <option>Draft</option>
+                            </select>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div class="text-center py-16">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2304/2304502.png" alt="No policies" class="w-24 mx-auto mb-4 opacity-70">
+                            <p class="text-gray-500 mb-4 text-lg">No policies configured yet</p>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">+ Add First Policy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database Tab -->
+                <div id="database" class="content-section">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">Database Settings</h2>
+                        <p class="text-gray-600">Database configuration and settings will be displayed here.</p>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings" class="content-section">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">Settings</h2>
+                        <p class="text-gray-600">System settings and configuration will be displayed here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bank Modal -->
+    <div id="bankModal" class="fixed inset-0 bg-black/40 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl w-full max-w-md p-6 shadow-lg">
+            <h3 id="bankModalTitle" class="text-lg font-bold text-gray-900 mb-4">Add Bank</h3>
+
+            <div class="space-y-4">
+                <input id="bankCode" placeholder="Bank Code (eg: HDFC)" class="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition uppercase">
+
+                <input id="bankName" placeholder="Bank Name" class="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+
+                <input id="bankROI" placeholder="Starting ROI (%)" class="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition" type="number" step="0.1" min="0" max="30">
+
+                <input type="hidden" id="editBankId">
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+                <button onclick="closeBankModal()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition font-medium">
+                    Cancel
+                </button>
+                <button onclick="saveBank()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+                    Save Bank
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIN Code Modal -->
+    <div id="pinModal" class="fixed inset-0 bg-black/40 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl w-full max-w-lg p-6 shadow-lg overflow-y-auto max-h-[90vh]">
+            <h3 id="pinModalTitle" class="text-lg font-bold text-gray-900 mb-4">Add PIN Code</h3>
+
+            <div class="space-y-4">
+                <input id="pinCodeInput" placeholder="PIN Code (6 digits)" class="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition uppercase" maxlength="6">
+
+                <select id="pinCategory" class="border border-gray-300 px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    <option value="Metro">Metro</option>
+                    <option value="Urban">Urban</option>
+                    <option value="Rural">Rural</option>
+                </select>
+
+                <div>
+                    <p class="font-medium text-gray-900 mb-3">Serviceable Banks</p>
+                    <div id="pinBankList" class="grid grid-cols-2 gap-3 mb-6 max-h-48 overflow-y-auto border border-gray-200 p-3 rounded-lg"></div>
+                </div>
+
+                <input type="hidden" id="editPinId">
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+                <button onclick="closePinModal()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition font-medium">
+                    Cancel
+                </button>
+                <button onclick="savePin()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+                    Save PIN Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar collapse toggle
+        document.getElementById('toggleSidebar').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+            document.querySelector('.sidebar').style.width = 
+                document.querySelector('.sidebar').classList.contains('collapsed') ? '80px' : '260px';
+        });
+
+        function switchTab(tabName) {
+            // Remove active class from all links and sections
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            
+            // Add active class to clicked link and corresponding section
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            // Update page title
+            const titleMap = {
+                'overview': 'Dashboard Overview',
+                'companies': 'Companies',
+                'pincodes': 'PIN Codes',
+                'banks': 'Banks',
+                'offers': 'Live Offers',
+                'policies': 'Policy Details',
+                'database': 'Database Settings',
+                'settings': 'Settings'
+            };
+            document.getElementById('page-title').textContent = titleMap[tabName];
+            document.getElementById('page-subtitle').textContent = 'Monitor and manage your FiClear platform';
+
+            // Update top action button
+            const actionMap = {
+                'companies': '+ Add Company',
+                'pincodes': '+ Add PIN Code',
+                'banks': '+ Add Bank',
+                'offers': '+ Create Offer',
+                'policies': '+ Add Policy'
+            };
+
+            const actionBtn = document.getElementById('top-action-btn');
+            if (actionMap[tabName]) {
+                actionBtn.textContent = actionMap[tabName];
+                actionBtn.classList.remove('hidden');
+            } else {
+                actionBtn.classList.add('hidden');
+            }
+        }
+
+        // Tab switching via sidebar
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                switchTab(tabName);
+            });
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(() => {
+                    window.location.href = '/AdminLogin.html';
+                })
+                .catch(err => console.error('Logout error:', err));
+        });
+
+        // Check if user is logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/check-auth')
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.authenticated) {
+                        window.location.href = '/AdminLogin.html';
+                    } else {
+                        document.getElementById('admin-name').textContent = data.username || 'Admin';
+                    }
+                })
+                .catch(() => {
+                    window.location.href = '/AdminLogin.html';
+                });
+        });
+
+        // ==================== BANK MANAGEMENT ====================
+
+        const demoBanks = [
+            { code: "BFL", name: "Bajaj Finance Ltd", roi: 12.5 },
+            { code: "TCL", name: "Tata Capital", roi: 11.8 },
+            { code: "ABFL", name: "Aditya Birla Finance", roi: 11.2 },
+            { code: "HDFC", name: "HDFC Bank", roi: 10.5 },
+            { code: "AXIS", name: "Axis Bank", roi: 10.8 },
+            { code: "ICICI", name: "ICICI Bank", roi: 10.9 },
+            { code: "KOTAK", name: "Kotak Mahindra Bank", roi: 11.0 },
+            { code: "INDUS", name: "IndusInd Bank", roi: 11.4 },
+            { code: "IDFC", name: "IDFC First Bank", roi: 9.9 },
+            { code: "YES-BANK", name: "Yes Bank", roi: 12.0 }
+        ];
+
+        let banks = JSON.parse(localStorage.getItem("banks"));
+
+        // Load demo banks if empty or old format detected (missing 'code' field)
+        if (!banks || banks.length === 0 || (banks.length > 0 && !banks[0].code)) {
+            banks = demoBanks.map(b => ({ ...b, id: Date.now() + Math.random() }));
+            localStorage.setItem("banks", JSON.stringify(banks));
+        }
+
+        function openBankModal() {
+            document.getElementById("bankModalTitle").innerText = "Add Bank";
+            document.getElementById("editBankId").value = "";
+            document.getElementById("bankCode").value = "";
+            document.getElementById("bankName").value = "";
+            document.getElementById("bankROI").value = "";
+            document.getElementById("bankModal").classList.remove("hidden");
+            document.getElementById("bankCode").focus();
+        }
+
+        function closeBankModal() {
+            document.getElementById("bankModal").classList.add("hidden");
+        }
+
+        function saveBank() {
+            const id = document.getElementById("editBankId").value;
+            const code = document.getElementById("bankCode").value.trim().toUpperCase();
+            const name = document.getElementById("bankName").value.trim();
+            const roi = parseFloat(document.getElementById("bankROI").value.trim());
+
+            if (!code || !name || isNaN(roi)) {
+                alert("Please fill all fields correctly");
+                return;
+            }
+
+            if (id) {
+                // EDIT MODE
+                const bank = banks.find(b => b.id == id);
+                if (bank) {
+                    bank.code = code;
+                    bank.name = name;
+                    bank.roi = roi;
+                }
+            } else {
+                // ADD MODE
+                banks.push({
+                    id: Date.now() + Math.random(),
+                    code,
+                    name,
+                    roi
+                });
+            }
+
+            localStorage.setItem("banks", JSON.stringify(banks));
+            closeBankModal();
+            renderBanks();
+        }
+
+        function editBank(id) {
+            const bank = banks.find(b => b.id === id);
+            if (!bank) return;
+
+            document.getElementById("bankModalTitle").innerText = "Edit Bank";
+            document.getElementById("editBankId").value = bank.id;
+            document.getElementById("bankCode").value = bank.code;
+            document.getElementById("bankName").value = bank.name;
+            document.getElementById("bankROI").value = bank.roi;
+
+            document.getElementById("bankModal").classList.remove("hidden");
+            document.getElementById("bankCode").focus();
+        }
+
+        function deleteBank(id) {
+            if (!confirm("Delete this bank?")) return;
+
+            banks = banks.filter(b => b.id !== id);
+            localStorage.setItem("banks", JSON.stringify(banks));
+            renderBanks();
+        }
+
+        function renderBanks() {
+            const list = document.getElementById("bankList");
+            const search = document.getElementById("bankSearch").value.toLowerCase();
+
+            list.innerHTML = "";
+
+            const filtered = banks.filter(b => 
+                b.name.toLowerCase().includes(search) || 
+                b.code.toLowerCase().includes(search)
+            );
+
+            if (!filtered.length) {
+                list.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3050/3050159.png" alt="No banks" class="w-24 mx-auto mb-4 opacity-70">
+                        <p class="text-gray-500 mb-4">No banks found</p>
+                        <button onclick="openBankModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                            + Add Bank
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            filtered.forEach(bank => {
+                list.innerHTML += `
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition bg-white">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-base">${bank.name}</h4>
+                                <p class="text-xs text-gray-500 font-mono uppercase">${bank.code}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editBank(${bank.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Edit</button>
+                                <button onclick="deleteBank(${bank.id})" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Starting ROI</p>
+                        <p class="text-lg font-bold text-green-600 mb-3">${bank.roi}%</p>
+
+                        <span class="inline-block text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-medium">
+                            ✓ Active
+                        </span>
+                    </div>
+                `;
+            });
+        }
+
+        // Initial render on page load
+        renderBanks();
+
+        // ==================== PIN CODE MANAGEMENT ====================
+
+        let pins = JSON.parse(localStorage.getItem("pins")) || [];
+
+        function openPinModal(edit = false, pinId = null) {
+            document.getElementById("pinModal").classList.remove("hidden");
+            document.getElementById("pinModalTitle").innerText = edit ? "Edit PIN Code" : "Add PIN Code";
+            document.getElementById("editPinId").value = "";
+            document.getElementById("pinCodeInput").value = "";
+            document.getElementById("pinCategory").value = "Metro";
+
+            loadPinBankCheckboxes([]);
+
+            if (edit && pinId) {
+                const pin = pins.find(p => p.id === pinId);
+                if (pin) {
+                    document.getElementById("editPinId").value = pin.id;
+                    document.getElementById("pinCodeInput").value = pin.pin;
+                    document.getElementById("pinCategory").value = pin.category;
+                    loadPinBankCheckboxes(pin.banks || []);
+                }
+            }
+
+            document.getElementById("pinCodeInput").focus();
+        }
+
+        function closePinModal() {
+            document.getElementById("pinModal").classList.add("hidden");
+        }
+
+        function loadPinBankCheckboxes(selected = []) {
+            const box = document.getElementById("pinBankList");
+            box.innerHTML = "";
+
+            if (banks.length === 0) {
+                box.innerHTML = '<p class="col-span-2 text-sm text-gray-500">Add banks first</p>';
+                return;
+            }
+
+            banks.forEach(bank => {
+                const checked = selected.includes(bank.code) ? "checked" : "";
+                box.innerHTML += `
+                    <label class="flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-50 p-2 rounded">
+                        <input type="checkbox" value="${bank.code}" ${checked} class="w-4 h-4">
+                        <span>${bank.name}</span>
+                    </label>
+                `;
+            });
+        }
+
+        function savePin() {
+            const pinCode = document.getElementById("pinCodeInput").value.trim();
+            const category = document.getElementById("pinCategory").value;
+            const id = document.getElementById("editPinId").value;
+
+            const selectedBanks = [...document.querySelectorAll("#pinBankList input:checked")]
+                .map(cb => cb.value);
+
+            if (pinCode.length !== 6 || isNaN(pinCode)) {
+                return alert("Please enter a valid 6-digit PIN code");
+            }
+
+            if (selectedBanks.length === 0) {
+                return alert("Please select at least one bank");
+            }
+
+            if (id) {
+                // EDIT MODE
+                const pin = pins.find(p => p.id == id);
+                if (pin) {
+                    pin.pin = pinCode;
+                    pin.category = category;
+                    pin.banks = selectedBanks;
+                }
+            } else {
+                // ADD MODE
+                pins.push({
+                    id: Date.now(),
+                    pin: pinCode,
+                    category,
+                    banks: selectedBanks
+                });
+            }
+
+            localStorage.setItem("pins", JSON.stringify(pins));
+            closePinModal();
+            renderPins();
+        }
+
+        function deletePin(id) {
+            if (!confirm("Delete this PIN code?")) return;
+            pins = pins.filter(p => p.id !== id);
+            localStorage.setItem("pins", JSON.stringify(pins));
+            renderPins();
+        }
+
+        function renderPins() {
+            const list = document.getElementById("pinList");
+            const search = document.getElementById("pinSearch").value.toLowerCase() || "";
+
+            list.innerHTML = "";
+
+            const filtered = pins.filter(p => p.pin.includes(search));
+
+            if (!filtered.length) {
+                list.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4024/4024982.png" alt="No PIN codes" class="w-24 mx-auto mb-4 opacity-70">
+                        <p class="text-gray-500 mb-4">No PIN codes added yet</p>
+                        <button onclick="openPinModal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                            + Add First PIN Code
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const bankCount = p.banks?.length || 0;
+                list.innerHTML += `
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition bg-white">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <p class="font-bold text-gray-900 text-lg">${p.pin}</p>
+                                <span class="inline-block text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium mt-2">${p.category}</span>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button onclick="openPinModal(true, ${p.id})" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Edit</button>
+                                <button onclick="deletePin(${p.id})" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-600 uppercase tracking-wider mb-2">Serviceable Banks (${bankCount})</p>
+                        <div class="flex flex-wrap gap-2">
+                            ${(p.banks || []).map(code => {
+                                const bank = banks.find(b => b.code === code);
+                                return `<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">${bank?.name || code}</span>`;
+                            }).join("")}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Initial render
+        renderPins();
+    </script>
+</body>
+</html>

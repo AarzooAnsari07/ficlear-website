@@ -1,0 +1,206 @@
+{
+  "locations": {
+    "400001": {
+      "area": "FORT",
+      "district": "MUMBAI",
+      "state": "MAHARASHTRA",
+      "category": "Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": true,
+        "KOTAK": true,
+        "INDUS": false,
+        "IDFC": true,
+        "YES-BANK": false
+      }
+    },
+
+    "110001": {
+      "area": "CONNAUGHT PLACE",
+      "district": "NEW DELHI",
+      "state": "DELHI",
+      "category": "Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": true,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": true,
+        "KOTAK": false,
+        "INDUS": true,
+        "IDFC": true,
+        "YES-BANK": true
+      }
+    },
+
+    "560001": {
+      "area": "MG ROAD",
+      "district": "BENGALURU",
+      "state": "KARNATAKA",
+      "category": "Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": true,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": true,
+        "KOTAK": true,
+        "INDUS": true,
+        "IDFC": false,
+        "YES-BANK": false
+      }
+    },
+
+    "600001": {
+      "area": "PARRYS",
+      "district": "CHENNAI",
+      "state": "TAMIL NADU",
+      "category": "Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": false,
+        "ICICI": true,
+        "KOTAK": true,
+        "INDUS": false,
+        "IDFC": true,
+        "YES-BANK": true
+      }
+    },
+
+    "700001": {
+      "area": "BBD BAGH",
+      "district": "KOLKATA",
+      "state": "WEST BENGAL",
+      "category": "Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": false,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": true,
+        "KOTAK": false,
+        "INDUS": false,
+        "IDFC": true,
+        "YES-BANK": true
+      }
+    },
+
+    "411001": {
+      "area": "SHIVAJI NAGAR",
+      "district": "PUNE",
+      "state": "MAHARASHTRA",
+      "category": "Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": true,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": true,
+        "KOTAK": true,
+        "INDUS": true,
+        "IDFC": true,
+        "YES-BANK": false
+      }
+    },
+
+    "302001": {
+      "area": "MI ROAD",
+      "district": "JAIPUR",
+      "state": "RAJASTHAN",
+      "category": "Non-Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": false,
+        "ICICI": true,
+        "KOTAK": false,
+        "INDUS": false,
+        "IDFC": true,
+        "YES-BANK": false
+      }
+    },
+
+    "452001": {
+      "area": "PALASIA",
+      "district": "INDORE",
+      "state": "MADHYA PRADESH",
+      "category": "Non-Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": false,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": true,
+        "KOTAK": false,
+        "INDUS": false,
+        "IDFC": false,
+        "YES-BANK": false
+      }
+    },
+
+    "226001": {
+      "area": "HAZRATGANJ",
+      "district": "LUCKNOW",
+      "state": "UTTAR PRADESH",
+      "category": "Non-Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": true,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": true,
+        "ICICI": false,
+        "KOTAK": false,
+        "INDUS": false,
+        "IDFC": true,
+        "YES-BANK": false
+      }
+    },
+
+    "800001": {
+      "area": "FRASER ROAD",
+      "district": "PATNA",
+      "state": "BIHAR",
+      "category": "Non-Metro",
+      "banks": {
+        "BFL": true,
+        "TCL": false,
+        "ABFL": false,
+        "HDFC": true,
+        "AXIS": false,
+        "ICICI": false,
+        "KOTAK": false,
+        "INDUS": false,
+        "IDFC": true,
+        "YES-BANK": false
+      }
+    }
+  },
+
+  "areaIndex": {
+    "FORT": ["400001"],
+    "CONNAUGHT PLACE": ["110001"],
+    "MG ROAD": ["560001"],
+    "PARRYS": ["600001"],
+    "BBD BAGH": ["700001"],
+    "SHIVAJI NAGAR": ["411001"],
+    "MI ROAD": ["302001"],
+    "PALASIA": ["452001"],
+    "HAZRATGANJ": ["226001"],
+    "FRASER ROAD": ["800001"]
+  }
+}
