@@ -24,6 +24,30 @@ app.use(session({
 // Serve static files from parent directory
 app.use(express.static(path.join(__dirname, '..')));
 
+// Redirect /index.html to /
+app.get('/index.html', (req, res) => {
+  res.redirect('/');
+});
+
+// Rewrite URLs to serve .html files without extension
+app.use((req, res, next) => {
+  // Skip if it's an API route, has a file extension, or is root
+  if (req.path.startsWith('/api/') || req.path.includes('.') || req.path === '/') {
+    return next();
+  }
+  
+  // Try serving the .html file
+  const filePath = path.join(__dirname, '..', req.path + '.html');
+  
+  // Check if file exists
+  const fs = require('fs');
+  if (fs.existsSync(filePath)) {
+    return res.sendFile(filePath);
+  }
+  
+  next();
+});
+
 const PORT = process.env.PORT || 3000;
 
 const pool = new Pool({
