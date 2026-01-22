@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CIBIL Report Analysis - FiClear</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+      .animate-slideUp { animation: slideUp 0.5s ease-out; }
+      .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+      .animate-pulse { animation: pulse 2s infinite; }
+      
+      .credit-score-badge {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: bold;
+        color: white;
+      }
+      
+      .score-excellent { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+      .score-good { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+      .score-fair { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+      .score-poor { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+      
+      .insight-card {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+        border-left: 4px solid #3b82f6;
+      }
+      
+      .metric-box {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border: 1px solid #e5e7eb;
+      }
+    </style>
+  </head>
+  <body class="bg-white min-h-screen">
+    <div id="root">
+      <div id="site-header"></div>
+
+      <!-- HERO SECTION -->
+      <div class="bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50 py-16">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+          <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full mb-6 text-sm font-medium">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+            AI-Powered Analysis
+          </div>
+
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Analyze Your CIBIL Report
+          </h1>
+          <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+            Upload your CIBIL report and get instant AI-powered analysis with detailed insights about your credit profile, accounts, and financial health.
+          </p>
+        </div>
+      </div>
+
+      <main class="max-w-5xl mx-auto px-4 py-12">
+        <div class="space-y-8">
+          <!-- UPLOAD SECTION -->
+          <div id="upload-section" class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 animate-slideUp">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Upload Your CIBIL Report</h2>
+            <p class="text-gray-600 mb-6">Maximum file size: 10 MB (PDF format only)</p>
+
+            <!-- File Upload Area -->
+            <div id="upload-area" class="relative border-2 border-dashed border-blue-300 bg-blue-50 rounded-xl p-12 text-center cursor-pointer transition hover:bg-blue-100 hover:border-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto mb-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <input type="file" id="cibil-pdf-input" accept=".pdf" class="hidden" />
+              <p class="text-gray-700 font-semibold mb-2">Drag and drop your CIBIL PDF here</p>
+              <p class="text-gray-500 text-sm mb-4">or click to browse</p>
+              <button id="browse-btn" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">
+                Browse Files
+              </button>
+            </div>
+
+            <!-- Password Section -->
+            <div id="password-section" class="hidden mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                </svg>
+                CIBIL Report Password (Optional)
+              </label>
+               <div class="relative">
+                 <input type="password" id="cibil-password-input" placeholder="Leave blank if not password-protected" class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                 <button type="button" id="toggle-password-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition" title="Show/Hide Password">
+                   <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                   </svg>
+                 </button>
+               </div>
+              <p class="text-xs text-gray-500 mt-2">Common formats: DOB (DD-MM-YYYY) or mobile number</p>
+            </div>
+
+            <!-- File Selected Info -->
+            <div id="file-selected" class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+              <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <div>
+                <p class="text-sm font-semibold text-green-800" id="file-name">File selected</p>
+                <p class="text-xs text-green-700">Ready to analyze</p>
+              </div>
+            </div>
+
+            <!-- Analyze Button -->
+            <button id="analyze-btn" class="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" disabled>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              Analyze with AI
+            </button>
+          </div>
+
+          <!-- LOADING STATE -->
+          <div id="loading-state" class="hidden bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center animate-fadeIn">
+            <div class="inline-block">
+              <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-pulse"></div>
+            </div>
+            <p class="mt-4 text-lg font-semibold text-gray-900">Analyzing your CIBIL report...</p>
+            <p class="text-gray-500 text-sm mt-2">Our AI is extracting and analyzing your credit information. This usually takes 5-10 seconds.</p>
+            <div class="mt-6 flex justify-center gap-2">
+              <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+              <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style="animation-delay: 0.2s"></div>
+              <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style="animation-delay: 0.4s"></div>
+            </div>
+          </div>
+
+          <!-- RESULTS SECTION -->
+          <div id="results-section" class="hidden space-y-6 animate-slideUp">
+            <!-- SUMMARY STATISTICS -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+              <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <p class="text-gray-600 text-xs font-medium mb-1">Active Loans</p>
+                <p id="summary-active-loans" class="text-xl font-bold text-blue-600">₹0</p>
+              </div>
+              <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <p class="text-gray-600 text-xs font-medium mb-1">Active Credit Cards</p>
+                <p id="summary-active-cc" class="text-xl font-bold text-blue-600">₹0</p>
+              </div>
+              <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <p class="text-gray-600 text-xs font-medium mb-1">Overdue</p>
+                <p id="summary-overdue" class="text-xl font-bold text-red-600">0</p>
+              </div>
+              <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <p class="text-gray-600 text-xs font-medium mb-1">Age</p>
+                <p id="summary-age" class="text-xl font-bold text-green-600">-</p>
+              </div>
+              <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+                <p class="text-gray-600 text-xs font-medium mb-1">Enquiries</p>
+                <p id="summary-enquiries" class="text-xl font-bold text-purple-600">0</p>
+              </div>
+            </div>
+
+            <!-- Credit Score Card -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-6">
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Credit Profile Summary</h2>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Score Badge -->
+                <div class="flex flex-col items-center">
+                  <div id="score-badge" class="credit-score-badge score-good mb-4">750</div>
+                  <p class="text-gray-600 text-sm font-medium">CIBIL Score</p>
+                  <p id="score-band" class="text-lg font-bold text-gray-900 mt-2">Good</p>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="metric-box p-4 rounded-lg">
+                    <p class="text-gray-600 text-xs font-medium">Credit Age</p>
+                    <p id="credit-age" class="text-2xl font-bold text-gray-900 mt-1">6Y 3M</p>
+                  </div>
+                  <div class="metric-box p-4 rounded-lg">
+                    <p class="text-gray-600 text-xs font-medium">Live Accounts</p>
+                    <p id="live-accounts" class="text-2xl font-bold text-gray-900 mt-1">3</p>
+                  </div>
+                  <div class="metric-box p-4 rounded-lg">
+                    <p class="text-gray-600 text-xs font-medium">Monthly EMI</p>
+                    <p id="monthly-emi" class="text-2xl font-bold text-blue-600 mt-1">₹45,000</p>
+                  </div>
+                  <div class="metric-box p-4 rounded-lg">
+                    <p class="text-gray-600 text-xs font-medium">Risk Level</p>
+                    <p id="risk-level" class="text-2xl font-bold text-green-600 mt-1">Low</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB SECTION -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <!-- Tab Buttons -->
+              <div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
+                <button class="tab-button active border-b-2 border-blue-600 bg-white px-4 py-2 font-semibold text-gray-900" data-tab="loans">
+                  📊 Active Loans
+                </button>
+                <button class="tab-button border-b-2 border-transparent px-4 py-2 font-semibold text-gray-600 hover:text-gray-900" data-tab="cards">
+                  💳 Credit Cards
+                </button>
+                <button class="tab-button border-b-2 border-transparent px-4 py-2 font-semibold text-gray-600 hover:text-gray-900" data-tab="enquiries">
+                  📝 Enquiries
+                </button>
+                <button class="tab-button border-b-2 border-transparent px-4 py-2 font-semibold text-gray-600 hover:text-gray-900" data-tab="profile">
+                  👤 Profile
+                </button>
+              </div>
+
+              <!-- Tab: Active Loans -->
+              <div id="tab-loans" class="tab-content">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Active Loan Accounts</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="border-b border-gray-200">
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Bank Name</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Account Type</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Ownership</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Opened Date</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Status</th>
+                        <th class="text-right px-4 py-3 font-semibold text-gray-700">Loan Amount</th>
+                        <th class="text-right px-4 py-3 font-semibold text-gray-700">Outstanding</th>
+                      </tr>
+                    </thead>
+                    <tbody id="loans-table-body">
+                      <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Tab: Credit Cards -->
+              <div id="tab-cards" class="tab-content hidden">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Active Credit Cards</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="border-b border-gray-200">
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Bank Name</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Account Type</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Ownership</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Opened Date</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Status</th>
+                        <th class="text-right px-4 py-3 font-semibold text-gray-700">Maximum Utilization</th>
+                        <th class="text-right px-4 py-3 font-semibold text-gray-700">Outstanding</th>
+                      </tr>
+                    </thead>
+                    <tbody id="cards-table-body">
+                      <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Tab: Enquiries -->
+              <div id="tab-enquiries" class="tab-content hidden">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Enquiries</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="border-b border-gray-200">
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Purpose</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Financial Institution</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-700">Enquired On</th>
+                      </tr>
+                    </thead>
+                    <tbody id="enquiries-table-body">
+                      <tr><td colspan="3" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Tab: Profile -->
+              <div id="tab-profile" class="tab-content hidden">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Personal Details</h3>
+                <div id="profile-details" class="grid grid-cols-2 gap-6">
+                  <div>
+                    <p class="text-gray-600 text-sm font-medium mb-1">Full Name</p>
+                    <p class="text-lg font-semibold text-gray-900">Loading...</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-sm font-medium mb-1">PAN</p>
+                    <p class="text-lg font-semibold text-gray-900">Loading...</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-sm font-medium mb-1">Date of Birth</p>
+                    <p class="text-lg font-semibold text-gray-900">Loading...</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-sm font-medium mb-1">Gender</p>
+                    <p class="text-lg font-semibold text-gray-900">Loading...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mt-6">
+              <div class="flex flex-col sm:flex-row gap-4">
+                <button id="download-report-btn" class="flex-1 bg-white border-2 border-blue-600 hover:bg-blue-50 text-blue-600 font-semibold py-3 rounded-lg transition">
+                  <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                  </svg>
+                  Download Analysis
+                </button>
+                <button id="check-eligibility-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
+                  <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                  Check Loan Eligibility
+                </button>
+              </div>
+            </div>
+
+            <!-- New Analysis Button -->
+            <button id="new-analysis-btn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-3 rounded-lg transition mt-4">
+              Analyze Another Report
+            </button>
+          </div>
+
+          <!-- ERROR STATE -->
+          <div id="error-state" class="hidden bg-white rounded-2xl shadow-lg border border-red-200 bg-red-50 p-8 text-center animate-fadeIn">
+            <svg class="w-12 h-12 text-red-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p id="error-message" class="text-lg font-semibold text-gray-900 mb-2">Analysis Failed</p>
+            <p class="text-gray-600 mb-6">Please ensure you've uploaded a valid CIBIL report PDF</p>
+            <button id="try-again-btn" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- FEATURES SECTION -->
+      <div class="bg-gray-50 border-t border-gray-200 py-12 mt-12">
+        <div class="max-w-5xl mx-auto px-4">
+          <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">Why Analyze Your CIBIL?</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow text-center">
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v2h8v-2zM16 11a2 2 0 10-4 0 2 2 0 014 0zM12 20h.01M8 20h.01M4 20h.01M16 20h.01M20 14a2 2 0 10-4 0 2 2 0 014 0z"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Understand Your Score</h3>
+              <p class="text-gray-600 text-sm">Get detailed insights into what makes up your CIBIL score and how to improve it</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow text-center">
+              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h.01a1 1 0 110 2h-.01zM15 7a1 1 0 110-2h.01a1 1 0 110 2h-.01zM9 7a1 1 0 110-2h.01a1 1 0 110 2h-.01zM12 3a1 1 0 100 2 1 1 0 000-2zM15 3a1 1 0 100 2 1 1 0 000-2zM9 3a1 1 0 100 2 1 1 0 000-2zM12 17a1 1 0 100-2 1 1 0 000 2zM15 17a1 1 0 100-2 1 1 0 000 2zM9 17a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Identify Opportunities</h3>
+              <p class="text-gray-600 text-sm">Find out what loans you're eligible for and at what interest rates</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow text-center">
+              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 11a6 6 0 00-5.86 0 3 3 0 00-.82 2.81V17a1 1 0 001 1h5.72a1 1 0 001-1v-2.38a3 3 0 00-.82-2.81z"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold text-gray-900 mb-2">Get Expert Advice</h3>
+              <p class="text-gray-600 text-sm">Receive personalized recommendations to improve your creditworthiness</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="site-footer"></div>
+    </div>
+
+    <script>
+      (function() {
+        const uploadArea = document.getElementById('upload-area');
+        const pdfInput = document.getElementById('cibil-pdf-input');
+        const browseBtn = document.getElementById('browse-btn');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const passwordInput = document.getElementById('cibil-password-input');
+        const passwordSection = document.getElementById('password-section');
+        const fileSelected = document.getElementById('file-selected');
+        const fileName = document.getElementById('file-name');
+
+        const uploadSection = document.getElementById('upload-section');
+        const loadingState = document.getElementById('loading-state');
+        const resultsSection = document.getElementById('results-section');
+        const errorState = document.getElementById('error-state');
+        const errorMessage = document.getElementById('error-message');
+
+        // Browse button click
+        browseBtn.addEventListener('click', () => pdfInput.click());
+
+          // Password toggle button
+          const togglePasswordBtn = document.getElementById('toggle-password-btn');
+          const eyeIcon = document.getElementById('eye-icon');
+        
+          togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            eyeIcon.setAttribute('fill', isPassword ? 'currentColor' : 'none');
+          });
+        
+          // Enter key to trigger analysis
+          passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && pdfInput.files[0] && !analyzeBtn.disabled) {
+              analyzeBtn.click();
+            }
+          });
+
+        // File input change
+        pdfInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            handleFileSelect(e.target.files[0]);
+          }
+        });
+
+        // Drag & Drop
+        uploadArea.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          uploadArea.classList.add('bg-blue-100', 'border-blue-500');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+          uploadArea.classList.remove('bg-blue-100', 'border-blue-500');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+          e.preventDefault();
+          uploadArea.classList.remove('bg-blue-100', 'border-blue-500');
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            handleFileSelect(e.dataTransfer.files[0]);
+          }
+        });
+
+        function handleFileSelect(file) {
+          if (file.type !== 'application/pdf') {
+            alert('Please upload a PDF file only');
+            return;
+          }
+          if (file.size > 10 * 1024 * 1024) {
+            alert('File size exceeds 10 MB');
+            return;
+          }
+
+          fileName.textContent = file.name;
+          fileSelected.classList.remove('hidden');
+          passwordSection.classList.remove('hidden');
+          analyzeBtn.disabled = false;
+        }
+
+        // Analyze button click
+        analyzeBtn.addEventListener('click', async () => {
+          const file = pdfInput.files[0];
+          const password = passwordInput.value;
+
+          if (!file) {
+            alert('Please select a PDF file');
+            return;
+          }
+
+          uploadSection.classList.add('hidden');
+          loadingState.classList.remove('hidden');
+          errorState.classList.add('hidden');
+          resultsSection.classList.add('hidden');
+
+          try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('password', password);
+
+            // Try AI analysis first
+            let response = await fetch('/api/ai/analyze-cibil', {
+              method: 'POST',
+              body: formData
+            });
+
+            let result = await response.json();
+
+            // If AI fails (401, 500, etc.), fallback to standard scan
+            if (!response.ok || result.error) {
+              console.warn('AI analysis failed, trying standard scan...', result.error);
+              
+              // Update loading message
+              loadingState.querySelector('p').textContent = 'AI unavailable, using standard extraction...';
+              
+              // Rebuild FormData (it can't be reused)
+              const formData2 = new FormData();
+              formData2.append('file', file);
+              formData2.append('password', password);
+              
+              // Try standard scan
+              response = await fetch('/api/scan-cibil', {
+                method: 'POST',
+                body: formData2
+              });
+
+              result = await response.json();
+              
+              if (!response.ok || result.error) {
+                throw new Error(result.error || 'Both AI and standard analysis failed');
+              }
+            }
+
+            // Display results
+            displayResults(result);
+          } catch (error) {
+            console.error('Error:', error);
+            showError(error.message || 'Failed to analyze CIBIL report. Please try again.');
+          }
+        });
+
+        function displayResults(result) {
+          // Extract data - handle both formats
+          const cibilData = result.cibil_data || result;
+          const creditScore = cibilData.credit_score || {};
+          const accounts = Array.isArray(cibilData.credit_accounts) ? cibilData.credit_accounts : [];
+          const enquiries = Array.isArray(cibilData.enquiries) ? cibilData.enquiries : [];
+          const personalDetails = cibilData.personal_details || {};
+          const obligations = cibilData.obligations || {};
+
+          console.log('Display Results Debug:', {
+            accounts: accounts,
+            enquiries: enquiries,
+            personalDetails: personalDetails
+          });
+
+          // === 1. UPDATE SUMMARY STATISTICS ===
+          // Calculate totals
+          const activeLoanAccounts = accounts.filter(a => 
+            a.account_status === 'LIVE' && a.account_type !== 'CREDIT_CARD'
+          );
+          const activeLoanTotal = activeLoanAccounts.reduce((sum, a) => 
+            sum + (a.current_outstanding || 0), 0
+          );
+
+          const activeCCAccounts = accounts.filter(a => 
+            a.account_status === 'LIVE' && a.account_type === 'CREDIT_CARD'
+          );
+          const activeCCTotal = activeCCAccounts.reduce((sum, a) => 
+            sum + (a.current_outstanding || 0), 0
+          );
+
+          // Update summary boxes
+          document.getElementById('summary-active-loans').textContent = 
+            '₹' + activeLoanTotal.toLocaleString('en-IN');
+          document.getElementById('summary-active-cc').textContent = 
+            '₹' + activeCCTotal.toLocaleString('en-IN');
+          document.getElementById('summary-overdue').textContent = '0'; // TODO: Extract from repayment behavior
+          
+          // Format age
+          const ageMonths = creditScore.credit_vintage_months || 0;
+          const years = Math.floor(ageMonths / 12);
+          const months = ageMonths % 12;
+          const ageText = years > 0 ? years + 'Y ' + months + 'M' : (months > 0 ? months + 'M' : '0M');
+          document.getElementById('summary-age').textContent = ageText;
+          
+          document.getElementById('summary-enquiries').textContent = enquiries.length;
+
+          // === 2. UPDATE CREDIT SCORE CARD ===
+          const score = creditScore.cibil_score || 0;
+          const scoreEl = document.getElementById('score-badge');
+          scoreEl.textContent = score || '-';
+          scoreEl.className = 'credit-score-badge ';
+          
+          if (score >= 750) {
+            scoreEl.className += 'score-excellent';
+            document.getElementById('score-band').textContent = 'Excellent';
+          } else if (score >= 700) {
+            scoreEl.className += 'score-good';
+            document.getElementById('score-band').textContent = 'Good';
+          } else if (score >= 650) {
+            scoreEl.className += 'score-fair';
+            document.getElementById('score-band').textContent = 'Fair';
+          } else {
+            scoreEl.className += 'score-poor';
+            document.getElementById('score-band').textContent = 'Poor';
+          }
+
+          // Update profile metrics
+          document.getElementById('credit-age').textContent = ageText;
+          document.getElementById('live-accounts').textContent = accounts.filter(a => a.account_status === 'LIVE').length;
+          
+          const monthlyEMI = obligations.net_obligation_for_foir || 0;
+          document.getElementById('monthly-emi').textContent = '₹' + monthlyEMI.toLocaleString('en-IN');
+
+          const riskLevel = score >= 750 ? 'Low' : score >= 700 ? 'Medium' : 'High';
+          document.getElementById('risk-level').textContent = riskLevel;
+
+          // === 3. POPULATE ACTIVE LOANS TAB ===
+          const loansTBody = document.getElementById('loans-table-body');
+          loansTBody.innerHTML = '';
+          
+          if (activeLoanAccounts.length === 0) {
+            loansTBody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No active loan accounts</td></tr>';
+          } else {
+            activeLoanAccounts.forEach(acc => {
+              const row = document.createElement('tr');
+              row.className = 'border-b border-gray-200 hover:bg-gray-50';
+              const statusColor = acc.account_status === 'LIVE' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
+              
+              row.innerHTML = `
+                <td class="px-4 py-3 font-medium text-blue-600">${acc.bank_name || 'Unknown'}</td>
+                <td class="px-4 py-3">${acc.account_type?.replace(/_/g, ' ') || '-'}</td>
+                <td class="px-4 py-3">${acc.ownership || 'Individual'}</td>
+                <td class="px-4 py-3">${acc.opened_date || '-'}</td>
+                <td class="px-4 py-3"><span class="inline-block px-3 py-1 ${statusColor} text-xs font-semibold rounded-full">${acc.account_status || '-'}</span></td>
+                <td class="px-4 py-3 text-right font-semibold">₹${(acc.loan_amount || 0).toLocaleString('en-IN')}</td>
+                <td class="px-4 py-3 text-right font-semibold">₹${(acc.current_outstanding || 0).toLocaleString('en-IN')}</td>
+              `;
+              loansTBody.appendChild(row);
+            });
+          }
+
+          // === 4. POPULATE CREDIT CARDS TAB ===
+          const cardsTBody = document.getElementById('cards-table-body');
+          cardsTBody.innerHTML = '';
+          
+          if (activeCCAccounts.length === 0) {
+            cardsTBody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No active credit cards</td></tr>';
+          } else {
+            activeCCAccounts.forEach(acc => {
+              const row = document.createElement('tr');
+              row.className = 'border-b border-gray-200 hover:bg-gray-50';
+              const statusColor = acc.account_status === 'LIVE' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
+              
+              row.innerHTML = `
+                <td class="px-4 py-3 font-medium text-blue-600">${acc.bank_name || 'Unknown'}</td>
+                <td class="px-4 py-3">${acc.account_type?.replace(/_/g, ' ') || '-'}</td>
+                <td class="px-4 py-3">${acc.ownership || 'Individual'}</td>
+                <td class="px-4 py-3">${acc.opened_date || '-'}</td>
+                <td class="px-4 py-3"><span class="inline-block px-3 py-1 ${statusColor} text-xs font-semibold rounded-full">${acc.account_status || '-'}</span></td>
+                <td class="px-4 py-3 text-right font-semibold">₹${(acc.credit_limit || 0).toLocaleString('en-IN')}</td>
+                <td class="px-4 py-3 text-right font-semibold">₹${(acc.current_outstanding || 0).toLocaleString('en-IN')}</td>
+              `;
+              cardsTBody.appendChild(row);
+            });
+          }
+
+          // === 5. POPULATE ENQUIRIES TAB ===
+          const enquiriesTBody = document.getElementById('enquiries-table-body');
+          enquiriesTBody.innerHTML = '';
+          
+          if (!enquiries || enquiries.length === 0) {
+            enquiriesTBody.innerHTML = '<tr><td colspan="3" class="px-4 py-8 text-center text-gray-500">No enquiries found</td></tr>';
+          } else {
+            enquiries.forEach(enq => {
+              const row = document.createElement('tr');
+              row.className = 'border-b border-gray-200 hover:bg-gray-50';
+              
+              row.innerHTML = `
+                <td class="px-4 py-3">${enq.enquiry_purpose || '-'}</td>
+                <td class="px-4 py-3 font-medium text-blue-600">${enq.financial_institution || '-'}</td>
+                <td class="px-4 py-3">${enq.enquiry_date || '-'}</td>
+              `;
+              enquiriesTBody.appendChild(row);
+            });
+          }
+
+          // === 6. POPULATE PROFILE TAB ===
+          const profileDetailsDiv = document.getElementById('profile-details');
+          profileDetailsDiv.innerHTML = `
+            <div>
+              <p class="text-gray-600 text-sm font-medium mb-1">Full Name</p>
+              <p class="text-lg font-semibold text-gray-900">${personalDetails.full_name || 'Not Available'}</p>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm font-medium mb-1">PAN</p>
+              <p class="text-lg font-semibold text-gray-900">${personalDetails.pan || 'Not Available'}</p>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm font-medium mb-1">Date of Birth</p>
+              <p class="text-lg font-semibold text-gray-900">${personalDetails.date_of_birth || 'Not Available'}</p>
+            </div>
+            <div>
+              <p class="text-gray-600 text-sm font-medium mb-1">Gender</p>
+              <p class="text-lg font-semibold text-gray-900">${personalDetails.gender || 'Not Available'}</p>
+            </div>
+          `;
+
+          // Setup tab switching
+          setupTabs();
+
+          // Show results
+          loadingState.classList.add('hidden');
+          resultsSection.classList.remove('hidden');
+        }
+
+        function setupTabs() {
+          const tabButtons = document.querySelectorAll('.tab-button');
+          const tabContents = document.querySelectorAll('.tab-content');
+
+          tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+              const tabName = button.getAttribute('data-tab');
+              
+              // Remove active state from all buttons and contents
+              tabButtons.forEach(b => {
+                b.classList.remove('active');
+                b.classList.remove('border-blue-600', 'bg-white');
+                b.classList.add('border-transparent');
+              });
+              tabContents.forEach(content => content.classList.add('hidden'));
+              
+              // Activate clicked button and show tab
+              button.classList.add('active');
+              button.classList.add('border-blue-600', 'bg-white');
+              button.classList.remove('border-transparent');
+              document.getElementById('tab-' + tabName).classList.remove('hidden');
+            });
+          });
+        }
+
+        function showError(message) {
+          errorMessage.textContent = message;
+          loadingState.classList.add('hidden');
+          errorState.classList.remove('hidden');
+        }
+
+        // New analysis button
+        document.getElementById('new-analysis-btn').addEventListener('click', () => {
+          uploadSection.classList.remove('hidden');
+          loadingState.classList.add('hidden');
+          errorState.classList.add('hidden');
+          resultsSection.classList.add('hidden');
+          pdfInput.value = '';
+          fileSelected.classList.add('hidden');
+          passwordSection.classList.add('hidden');
+          passwordInput.value = '';
+          analyzeBtn.disabled = true;
+        });
+
+        // Try again button
+        document.getElementById('try-again-btn').addEventListener('click', () => {
+          uploadSection.classList.remove('hidden');
+          loadingState.classList.add('hidden');
+          errorState.classList.add('hidden');
+          resultsSection.classList.add('hidden');
+          pdfInput.value = '';
+          fileSelected.classList.add('hidden');
+          passwordSection.classList.add('hidden');
+          analyzeBtn.disabled = true;
+        });
+
+        // New analysis button
+        document.getElementById('new-analysis-btn').addEventListener('click', () => {
+          uploadSection.classList.remove('hidden');
+          loadingState.classList.add('hidden');
+          errorState.classList.add('hidden');
+          resultsSection.classList.add('hidden');
+          pdfInput.value = '';
+          fileSelected.classList.add('hidden');
+          passwordSection.classList.add('hidden');
+          passwordInput.value = '';
+          analyzeBtn.disabled = true;
+        });
+
+        // Check eligibility button
+        document.getElementById('check-eligibility-btn').addEventListener('click', () => {
+          const cibilScore = document.getElementById('score-badge').textContent;
+          const monthlyEMI = document.getElementById('monthly-emi').textContent;
+          
+          // Store in session and redirect
+          sessionStorage.setItem('cibil-pre-filled', JSON.stringify({
+            score: cibilScore,
+            emi: monthlyEMI
+          }));
+          
+          window.location.href = '/LoanEligibility';
+        });
+
+        // Download report button
+        document.getElementById('download-report-btn').addEventListener('click', () => {
+          alert('Download feature coming soon!');
+        });
+      })();
+    </script>
+    <script src="assets/include-header-footer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,371 @@
+{
+  "banks": [
+    {
+      "bank_name": "Bajaj Finance",
+      "bank_code": "BAJAJ",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y", "PL_7Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 700,
+        "min_salary": 25000,
+        "min_age": 23,
+        "max_age": 58,
+        "allowed_company_categories": ["CAT_A", "CAT_B", "CAT_C"],
+        "min_credit_age_months": 6,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 0,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 3,
+        "salary_modes_allowed": ["BANK_TRANSFER", "CASH"]
+      },
+      
+      "default_foir": 60,
+      
+      "foir_by_category": {
+        "CAT_A": 65,
+        "CAT_B": 60,
+        "CAT_C": 55,
+        "CAT_D": 50
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 65,
+        "medium": 60,
+        "low": 55
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 2500000,
+        "PL_6Y": 2500000,
+        "PL_7Y": 2500000,
+        "default": 2500000
+      },
+      
+      "max_salary_multiplier": 25,
+      
+      "risk_adjustments": {
+        "new_customer_discount": 0.9,
+        "repeat_customer_bonus": 1.1
+      }
+    },
+    
+    {
+      "bank_name": "HDFC Bank",
+      "bank_code": "HDFC",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 750,
+        "min_salary": 30000,
+        "min_age": 21,
+        "max_age": 60,
+        "allowed_company_categories": ["CAT_A", "CAT_B"],
+        "min_credit_age_months": 12,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 0,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 2,
+        "salary_modes_allowed": ["BANK_TRANSFER"]
+      },
+      
+      "default_foir": 55,
+      
+      "foir_by_category": {
+        "CAT_A": 60,
+        "CAT_B": 55,
+        "CAT_C": 50
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 60,
+        "medium": 55
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 2000000,
+        "PL_6Y": 2000000,
+        "default": 2000000
+      },
+      
+      "max_salary_multiplier": 20
+    },
+    
+    {
+      "bank_name": "ICICI Bank",
+      "bank_code": "ICICI",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y", "PL_7Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 720,
+        "min_salary": 25000,
+        "min_age": 23,
+        "max_age": 58,
+        "allowed_company_categories": ["CAT_A", "CAT_B"],
+        "min_credit_age_months": 12,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 0,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 3,
+        "salary_modes_allowed": ["BANK_TRANSFER"]
+      },
+      
+      "default_foir": 60,
+      
+      "foir_by_category": {
+        "CAT_A": 65,
+        "CAT_B": 60,
+        "CAT_C": 55
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 65,
+        "medium": 60
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 3000000,
+        "PL_6Y": 3000000,
+        "PL_7Y": 3000000,
+        "default": 3000000
+      },
+      
+      "max_salary_multiplier": 30
+    },
+    
+    {
+      "bank_name": "Axis Bank",
+      "bank_code": "AXIS",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 720,
+        "min_salary": 30000,
+        "min_age": 21,
+        "max_age": 60,
+        "allowed_company_categories": ["CAT_A", "CAT_B"],
+        "min_credit_age_months": 12,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 0,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 2,
+        "salary_modes_allowed": ["BANK_TRANSFER"]
+      },
+      
+      "default_foir": 60,
+      
+      "foir_by_category": {
+        "CAT_A": 65,
+        "CAT_B": 60
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 65,
+        "medium": 60
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 2500000,
+        "PL_6Y": 2500000,
+        "default": 2500000
+      },
+      
+      "max_salary_multiplier": 25
+    },
+    
+    {
+      "bank_name": "Kotak Mahindra Bank",
+      "bank_code": "KOTAK",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 750,
+        "min_salary": 35000,
+        "min_age": 21,
+        "max_age": 58,
+        "allowed_company_categories": ["CAT_A"],
+        "min_credit_age_months": 18,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 0,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 2,
+        "salary_modes_allowed": ["BANK_TRANSFER"]
+      },
+      
+      "default_foir": 55,
+      
+      "foir_by_category": {
+        "CAT_A": 60,
+        "CAT_B": 55
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 60,
+        "medium": 55
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 2000000,
+        "PL_6Y": 2000000,
+        "default": 2000000
+      },
+      
+      "max_salary_multiplier": 20
+    },
+    
+    {
+      "bank_name": "Standard Chartered",
+      "bank_code": "SCB",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 750,
+        "min_salary": 50000,
+        "min_age": 21,
+        "max_age": 60,
+        "allowed_company_categories": ["CAT_A"],
+        "min_credit_age_months": 24,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 0,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 2,
+        "salary_modes_allowed": ["BANK_TRANSFER"]
+      },
+      
+      "default_foir": 60,
+      
+      "foir_by_category": {
+        "CAT_A": 65
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 65,
+        "medium": 60
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 3500000,
+        "PL_6Y": 3500000,
+        "default": 3500000
+      },
+      
+      "max_salary_multiplier": 35
+    },
+    
+    {
+      "bank_name": "IndusInd Bank",
+      "bank_code": "INDUSIND",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y", "PL_7Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 700,
+        "min_salary": 25000,
+        "min_age": 21,
+        "max_age": 60,
+        "allowed_company_categories": ["CAT_A", "CAT_B", "CAT_C"],
+        "min_credit_age_months": 12,
+        "ntc_allowed": false,
+        "max_dpd_allowed": 30,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 4,
+        "salary_modes_allowed": ["BANK_TRANSFER", "CASH"]
+      },
+      
+      "default_foir": 60,
+      
+      "foir_by_category": {
+        "CAT_A": 65,
+        "CAT_B": 60,
+        "CAT_C": 55
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 65,
+        "medium": 60,
+        "low": 55
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 2500000,
+        "PL_6Y": 2500000,
+        "PL_7Y": 2500000,
+        "default": 2500000
+      },
+      
+      "max_salary_multiplier": 25
+    },
+    
+    {
+      "bank_name": "IDFC First Bank",
+      "bank_code": "IDFC",
+      "active": true,
+      "products": ["PL_5Y", "PL_6Y"],
+      
+      "hard_rules": {
+        "min_cibil_score": 680,
+        "min_salary": 20000,
+        "min_age": 21,
+        "max_age": 60,
+        "allowed_company_categories": ["CAT_A", "CAT_B", "CAT_C", "CAT_D"],
+        "min_credit_age_months": 6,
+        "ntc_allowed": true,
+        "max_dpd_allowed": 30,
+        "allow_writeoff": false,
+        "allow_settlement": false,
+        "allow_legal_status": false,
+        "max_enquiries_30_days": 5,
+        "salary_modes_allowed": ["BANK_TRANSFER", "CASH"]
+      },
+      
+      "default_foir": 55,
+      
+      "foir_by_category": {
+        "CAT_A": 60,
+        "CAT_B": 55,
+        "CAT_C": 50,
+        "CAT_D": 45
+      },
+      
+      "foir_by_cibil_band": {
+        "high": 60,
+        "medium": 55,
+        "low": 50
+      },
+      
+      "max_loan_amount": {
+        "PL_5Y": 1500000,
+        "PL_6Y": 1500000,
+        "default": 1500000
+      },
+      
+      "max_salary_multiplier": 20
+    }
+  ],
+  
+  "metadata": {
+    "version": "2.0",
+    "last_updated": "2026-01-15",
+    "total_banks": 8,
+    "description": "Bank lending policies for FiClear AI Eligibility Engine v2"
+  }
+}

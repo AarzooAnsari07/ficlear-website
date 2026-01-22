@@ -5,8 +5,33 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Loan Eligibility - FiClear</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" crossorigin="" href="/assets/index-C7ZxKpI8.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .tooltip-trigger { position: relative; cursor: help; }
+      .tooltip-trigger:hover::after {
+        content: attr(data-tooltip);
+        position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+        background: #1f2937; color: white; padding: 8px 12px; border-radius: 6px;
+        font-size: 12px; white-space: nowrap; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+      .trust-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; }
+      .foir-section { background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); border-left: 4px solid #d97706; }
+      .cibil-section { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #0ea5e9; }
+      
+      /* Drag & Drop Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+      .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+      .animate-slideUp { animation: slideUp 0.4s ease-out; }
+    </style>
   </head>
   <body class="bg-white min-h-screen">
     <div id="root">
@@ -84,7 +109,7 @@
 
             <div data-slot="card" class="bg-white text-card-foreground flex flex-col gap-6 rounded-2xl shadow-lg border border-gray-100 p-8">
               <div id="steps" class="space-y-6">
-                <!-- Step 1 -->
+                <!-- Step 1: Personal Information -->
                 <div class="step" data-step="1">
                   <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -94,141 +119,777 @@
                     <div class="space-y-2">
                       <label for="name" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        Full Name <span class="text-red-500">*</span>
+                        Full Name (as per PAN Card) <span class="text-red-500">*</span>
                       </label>
-                      <input id="name" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter your full name" required>
-                      <p class="text-xs text-gray-500">As per your ID proof</p>
+                      <input id="name" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition uppercase" placeholder="ENTER YOUR FULL NAME" required>
                     </div>
+
+                    <div class="space-y-2">
+                      <label for="mobile" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        10-digit mobile number <span class="text-red-500">*</span>
+                      </label>
+                      <input id="mobile" type="tel" maxlength="10" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="10-digit mobile number" required>
+                    </div>
+
                     <div class="space-y-2">
                       <label for="pincode" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                        Area Pincode <span class="text-red-500">*</span>
+                        6 digit pincode <span class="text-red-500">*</span>
                       </label>
                       <input id="pincode" maxlength="6" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="6-digit pincode" required>
-                      <p class="text-xs text-gray-500">We'll check bank availability in your area</p>
+                      <div id="pincode-suggestions" class="hidden mt-2 space-y-2"></div>
                     </div>
-                    <div class="space-y-2">
-                      <label for="category" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M10 18v-7"></path><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"></path><path d="M14 18v-7"></path><path d="M18 18v-7"></path><path d="M3 22h18"></path><path d="M6 18v-7"></path></svg>
-                        Company Category <span class="text-red-500">*</span>
-                      </label>
-                      <select id="category" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition cursor-pointer">
-                        <option>Category A - MNC/Top Tier</option>
-                        <option>Category B - Mid Market</option>
-                        <option>Category C - SME</option>
-                      </select>
-                      <p class="text-xs text-gray-500">Helps us determine your eligibility</p>
+
+                    <div id="city-state-container" class="hidden grid grid-cols-2 gap-4">
+                      <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-900">City</label>
+                        <div id="city" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 text-gray-700 text-sm font-medium">-</div>
+                      </div>
+                      <div class="space-y-2">
+                        <label class="text-sm font-semibold text-gray-900">State</label>
+                        <div id="state" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 text-gray-700 text-sm font-medium">-</div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Step 2 -->
+                <!-- Step 2: Income & Company Details -->
+                <!-- Step 2: Income & Company Details -->
                 <div class="step hidden" data-step="2">
-                  <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                    Income & Obligations
+                  <h4 class="text-xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><path d="M12 2v20m10-10H2"></path></svg>
+                    Income & Company Details
                   </h4>
-                  <div class="space-y-5">
-                    <div class="space-y-2">
-                      <label for="turnover" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><path d="M12 2v20m10-10H2"></path></svg>
-                        Monthly Salary <span class="text-red-500">*</span>
-                      </label>
-                      <input id="turnover" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter gross monthly salary in ₹">
-                      <p class="text-xs text-gray-500">Your monthly take-home income</p>
+                  <p class="text-sm text-gray-600 mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                    Banks calculate eligibility based on your net income & obligations (FOIR)
+                  </p>
+                  <div class="space-y-6">
+                    
+                    <!-- TOP: Salary Slip Upload (Optional) with Drag & Drop -->
+                    <div id="salary-slip-container" class="relative p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-xl border-2 border-dashed border-blue-300 transition-all hover:border-blue-500 hover:shadow-md cursor-pointer group">
+                      <input id="salary-slip" type="file" accept=".pdf" class="hidden">
+                      
+                      <div class="text-center">
+                        <!-- Upload Icon Animation -->
+                        <div class="mb-3 inline-flex justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-blue-500 group-hover:text-blue-600 transition transform group-hover:scale-110">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                          </svg>
+                        </div>
+
+                        <!-- Main Label -->
+                        <h5 class="text-sm font-bold text-gray-900 mb-1">Drop your Salary Slip here</h5>
+                        <p class="text-xs text-gray-600 mb-3">or <span class="text-blue-600 font-semibold">browse to upload</span></p>
+
+                        <!-- File Info -->
+                        <p class="text-xs text-gray-500 mb-3">PDF only • Max 10MB</p>
+
+                        <!-- Preview (Hidden by default) -->
+                        <div id="file-preview" class="hidden mt-3 p-3 bg-white rounded-lg border border-green-200">
+                          <div class="flex items-center gap-2 justify-center text-green-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span id="file-name" class="text-xs font-medium text-gray-900">document.pdf</span>
+                          </div>
+                        </div>
+
+                        <!-- Helper Text -->
+                        <p class="text-xs text-gray-600 mt-4">📌 Auto-extract: Company name, Net salary, Employment duration</p>
+                      </div>
+
+                      <!-- Hover Overlay -->
+                      <div class="absolute inset-0 rounded-xl bg-blue-500/5 opacity-0 group-hover:opacity-100 transition pointer-events-none"></div>
                     </div>
+
+                    <!-- Password Field (If Required) -->
+                    <div id="password-section" class="hidden space-y-2 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                      <label for="salary-slip-password" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Password (If Required)
+                      </label>
+                      <input id="salary-slip-password" type="password" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition" placeholder="Enter PDF password if protected">
+                      <p class="text-xs text-gray-600 bg-white px-3 py-2 rounded border border-amber-100">Some salary slips are password-protected. Enter password if your PDF asks for one during extraction.</p>
+                    </div>
+
+                    <!-- OR Divider -->
+                    <div class="relative flex items-center my-6">
+                      <div class="flex-grow border-t-2 border-gray-200"></div>
+                      <span class="px-4 text-xs font-bold text-gray-600 bg-white uppercase tracking-wider">OR Fill Manually</span>
+                      <div class="flex-grow border-t-2 border-gray-200"></div>
+                    </div>
+
+                    <!-- MANUAL FIELDS -->
+                    <!-- Company Name (Auto-suggest) -->
                     <div class="space-y-2">
-                      <label for="emis" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                      <label for="company-name" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        Company Name <span class="text-red-500">*</span>
+                      </label>
+                      <input id="company-name" type="text" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Search or enter company name">
+                      <div id="company-suggestions" class="hidden mt-2 space-y-2 max-h-40 overflow-y-auto"></div>
+                    </div>
+
+                    <!-- Company Category (Auto Read-only) -->
+                    <div id="company-category-section" class="hidden space-y-2">
+                      <label class="text-sm font-semibold text-gray-900">Company Category</label>
+                      <div id="company-category" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-gray-50 text-gray-700 text-sm font-medium">-</div>
+                      <p class="text-xs text-gray-600">Based on employer stability & lender policy</p>
+                    </div>
+
+                    <!-- Net Monthly Salary (Take Home) -->
+                    <div class="space-y-2">
+                      <label for="net-salary" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                        Net Salary<span class="text-red-500">*</span>
+                      </label>
+                      <input id="net-salary" type="number" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter net monthly take home in ₹">
+                      <p class="text-xs text-gray-600">Average of last 3 months considered</p>
+                    </div>
+
+                    <!-- Monthly Obligations -->
+                    <div class="space-y-2">
+                      <label for="monthly-obligations" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-orange-600"><path d="M12 2v20m10-10H2"></path></svg>
                         Monthly Obligations <span class="text-red-500">*</span>
                       </label>
-                      <input id="emis" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Include EMIs, credit cards, etc.">
-                      <p class="text-xs text-gray-500">All monthly loan & credit payments</p>
+                      <input id="monthly-obligations" type="number" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Include EMIs, credit cards, etc.">
+                      <p class="text-xs text-gray-600">All monthly loan & credit payments (will be auto-updated from CIBIL in Step 3)</p>
                     </div>
 
-                    <div id="obligation-box" class="mt-6 rounded-lg bg-gradient-to-r from-blue-50 to-white p-4 border border-blue-100 flex justify-between items-center">
-                      <div class="flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 2v20m10-10H2"></path></svg>
-                        <div>
-                          <div class="text-sm font-semibold text-gray-900">Obligation Ratio</div>
-                          <p class="text-xs text-gray-500">Ideally ≤ 40%</p>
+                    <!-- FOIR Display Box -->
+                    <div id="foir-box" class="mt-6 rounded-xl p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 shadow-sm hover:shadow-md transition">
+                      <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center gap-3 flex-1">
+                          <div class="p-2 bg-blue-100 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 2v20m10-10H2"></path></svg>
+                          </div>
+                          <div>
+                            <div class="text-sm font-bold text-gray-900">Obligation-to-Income Ratio (FOIR)</div>
+                            <p class="text-xs text-gray-600">Banks prefer &lt; 40% for new loans</p>
+                          </div>
+                        </div>
+                        <div id="foir-value" class="text-4xl font-bold bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-transparent">0.0%</div>
+                      </div>
+                      <div class="mt-4 pt-4 border-t border-indigo-200">
+                        <div id="foir-status" class="flex items-center gap-2 font-medium">
+                          <span id="foir-status-text" class="text-sm text-gray-700">—</span>
                         </div>
                       </div>
-                      <div id="obligation-value" class="text-2xl font-bold text-blue-600">0.0%</div>
                     </div>
+
+                    <!-- Employment Verification Checkboxes -->
+                    <div class="space-y-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                      <div class="text-sm font-bold text-gray-900 mb-3">Employment Verification Details</div>
+                      <label class="flex items-center gap-3 cursor-pointer">
+                        <input id="email-available" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-900">Official Email ID Available</span>
+                      </label>
+                      <label class="flex items-center gap-3 cursor-pointer">
+                        <input id="pf-deduction" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-900">PF Deduction in Salary Slip</span>
+                      </label>
+                      <p class="text-xs text-gray-600 mt-2">These details improve your eligibility & bank confidence score</p>
+                    </div>
+
                   </div>
                 </div>
 
-                <!-- Step 3 -->
+                <!-- Step 3: Credit Dashboard -->
                 <div class="step hidden" data-step="3">
-                  <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 2.2"></path></svg>
-                    Credit Profile
+                  <h4 class="text-xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><path d="M9 11l3 3 8-8M3 20h18"></path></svg>
+                    Credit Dashboard
                   </h4>
-                  <div class="space-y-5">
-                    <div class="space-y-2">
-                      <label for="cibil" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 2.2"></path></svg>
-                        CIBIL Score <span class="text-red-500">*</span>
-                      </label>
-                      <input id="cibil" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="e.g., 750">
-                      <p class="text-xs text-gray-500">Score range: 300-900 (Higher is better)</p>
+                  <p class="text-sm text-gray-600 mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 2v20M2 12h20"></path></svg>
+                    Review your credit profile - this is what banks see
+                  </p>
+
+                  <div class="space-y-6" id="credit-upload-section">
+                  <div class="space-y-6" id="credit-upload-section">
+                    <!-- CIBIL PDF UPLOAD - DRAG & DROP ZONE -->
+                    <div id="cibil-upload-container" class="relative p-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-xl border-2 border-dashed border-blue-300 transition-all hover:border-blue-500 hover:shadow-lg cursor-pointer group">
+                      <input id="cibil-pdf" type="file" accept=".pdf" class="hidden">
+                      
+                      <div class="text-center">
+                        <div class="mb-4 inline-flex justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-blue-500 group-hover:text-blue-600 transition transform group-hover:scale-110">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <path d="M12 13v6M9 16h6"></path>
+                          </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-900 mb-1">Upload Your CIBIL Report</h5>
+                        <p class="text-sm text-gray-600 mb-4">or <span class="text-blue-600 font-semibold">browse to select</span></p>
+                        <p class="text-xs text-gray-500 mb-1">PDF format only • Maximum 10 MB</p>
+                        <p class="text-xs text-gray-500">Secure encrypted transfer</p>
+                      </div>
                     </div>
 
-                    <div id="credit-box" class="mt-6 rounded-lg bg-gradient-to-r from-green-50 to-white p-4 border border-green-100 flex justify-between items-center">
-                      <div class="flex items-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
-                        <div>
-                          <div class="text-sm font-semibold text-gray-900">Credit Rating</div>
-                          <p class="text-xs text-gray-500">Your score category</p>
-                        </div>
+                    <!-- Password field for protected PDFs -->
+                    <div class="space-y-2">
+                      <label for="cibil-password" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        CIBIL Report Password
+                        <span class="text-xs text-gray-500 font-normal">(Optional)</span>
+                      </label>
+                      <div class="relative">
+                        <input id="cibil-password" type="password" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Leave blank if your PDF is not password protected">
+                        <button id="toggle-password" type="button" class="absolute right-4 top-3 text-gray-500 hover:text-gray-700 transition">
+                          <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
                       </div>
-                      <div id="credit-rating" class="text-sm font-bold px-4 py-2 rounded-full bg-gray-100 text-gray-600">-</div>
+                      <p class="text-xs text-gray-600">If protected, common formats: DOB (DD-MM-YYYY) or registered mobile number</p>
+                    </div>
+
+                    <!-- Scan Button -->
+                    <button id="btn-scan-cibil" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      Scan CIBIL Report
+                    </button>
+
+                    <div id="cibil-scan-status" class="hidden text-sm text-gray-600">
+                      <div class="flex items-center gap-2 animate-pulse">
+                        <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                        <span>Analyzing your CIBIL report...</span>
+                      </div>
+                    </div>
+
+                    <p class="text-xs text-gray-600 flex items-start gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600 flex-shrink-0 mt-0.5"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                      <span><strong>Privacy Protected:</strong> Your password is not stored. All data is encrypted & deleted after processing.</span>
+                    </p>
+
+                    <!-- OR Divider -->
+                    <div class="relative flex items-center my-6">
+                      <div class="flex-grow border-t-2 border-gray-200"></div>
+                      <span class="px-4 text-xs font-bold text-gray-600 bg-white uppercase tracking-wider">OR Enter Manually</span>
+                      <div class="flex-grow border-t-2 border-gray-200"></div>
+                    </div>
+
+                    <!-- MANUAL ENTRY SECTION: CIBIL Score -->
+                    <div class="space-y-2">
+                      <label for="cibil-score" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"></path></svg>
+                        CIBIL Score
+                      </label>
+                      <input id="cibil-score" type="number" min="300" max="900" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="e.g., 750">
+                      <p class="text-xs text-gray-600">Score range: 300–900 (Higher is better)</p>
                     </div>
                   </div>
-                </div>
 
-                <!-- Step 4 -->
-                <div class="step hidden" data-step="4">
-                  <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                    Loan Details
-                  </h4>
-                  <div class="space-y-5">
-                    <div class="space-y-2">
-                      <label for="loan-amount" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v12m-4-3h8"></path></svg>
-                        Loan Amount Required <span class="text-red-500">*</span>
-                      </label>
-                      <input id="loan-amount" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Enter amount in ₹">
-                      <p class="text-xs text-gray-500">Amount you wish to borrow</p>
-                    </div>
-                    <div class="space-y-2">
-                      <label for="tenure" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        Loan Tenure <span class="text-red-500">*</span>
-                      </label>
-                      <select id="tenure" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition cursor-pointer">
-                        <option value="240">20 years (240 months)</option>
-                        <option value="120">10 years (120 months)</option>
-                        <option value="60">5 years (60 months)</option>
-                      </select>
-                      <p class="text-xs text-gray-500">Repayment period</p>
+                  <!-- ========================================
+                       CREDIT DASHBOARD (SHOWN AFTER SCAN)
+                       ======================================== -->
+                  <div id="credit-dashboard-main" class="hidden space-y-6 mt-6">
+                    
+                    <!-- 1. CREDIT SCORE SUMMARY (Top Cards) -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                      <h5 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><circle cx="12" cy="12" r="10"></circle></svg>
+                        Credit Score Summary
+                      </h5>
+                      
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- CIBIL Score -->
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">CIBIL Score</div>
+                          <div id="dash-cibil-score" class="text-3xl font-bold text-blue-600">-</div>
+                          <div id="dash-cibil-band" class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700 inline-block mt-2">-</div>
+                        </div>
+                        
+                        <!-- Credit Age -->
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Credit History</div>
+                          <div id="dash-credit-age" class="text-2xl font-bold text-purple-600">-</div>
+                          <div class="text-xs text-gray-500 mt-2">Years & Months</div>
+                        </div>
+                        
+                        <!-- Risk Band -->
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Risk Assessment</div>
+                          <div id="dash-risk-band" class="text-lg font-bold text-green-600">-</div>
+                          <div class="text-xs text-gray-500 mt-2">Bank Risk View</div>
+                        </div>
+                        
+                        <!-- Live Loans -->
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Active Loans</div>
+                          <div id="dash-live-loans" class="text-3xl font-bold text-orange-600">-</div>
+                          <div class="text-xs text-gray-500 mt-2">Live Accounts</div>
+                        </div>
+                      </div>
                     </div>
 
-                    <div class="mt-6 rounded-lg bg-gradient-to-r from-blue-50 via-purple-50 to-blue-50 p-5 border border-gray-200">
+                    <!-- 2. LOAN ACCOUNTS TABLE -->
+                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                      <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-4 border-b border-gray-200">
+                        <h5 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-indigo-600"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M3 9h18M9 3v18"></path></svg>
+                          Tradelines (from CIBIL)
+                        </h5>
+                        <p class="text-xs text-gray-600 mt-1">Snapshot of every account reported in your bureau</p>
+                      </div>
+                      
+                      <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                          <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Account Type</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Ownership</th>
+                              <th class="px-4 py-3 text-right font-semibold text-gray-900">Sanction Amount</th>
+                              <th class="px-4 py-3 text-right font-semibold text-gray-900">Current Balance</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Date Opened</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">DPDs in Tradelines</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody id="cibil-accounts-table-body">
+                            <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No accounts loaded yet</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- 3. EMI & OBLIGATION SUMMARY -->
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-orange-200">
+                      <h5 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-orange-600"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        EMI & Obligation Summary
+                      </h5>
+                      
+                      <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Total EMIs Found</div>
+                          <div id="dash-total-emi-found" class="text-2xl font-bold text-gray-900">₹-</div>
+                          <div class="text-xs text-gray-500 mt-1">From CIBIL</div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Excluded Obligations</div>
+                          <div id="dash-excluded-emi" class="text-2xl font-bold text-red-600">₹-</div>
+                          <div class="text-xs text-gray-500 mt-1">CC/Gold/OD</div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-sm border-2 border-green-500">
+                          <div class="text-xs text-green-700 font-bold mb-2">NET EMI for Eligibility</div>
+                          <div id="dash-net-emi" class="text-2xl font-bold text-green-600">₹-</div>
+                          <div class="text-xs text-green-600 mt-1">Used in FOIR</div>
+                        </div>
+                      </div>
+
+                      <!-- Obligation Rules Transparency -->
+                      <div class="mt-4 bg-white rounded-lg p-4">
+                        <div class="text-xs font-bold text-gray-900 mb-2">📋 Obligation Rules Applied:</div>
+                        <ul class="text-xs text-gray-700 space-y-1">
+                          <li class="flex items-start gap-2">
+                            <span class="text-blue-600 flex-shrink-0">•</span>
+                            <span>Credit Card limit ≤ ₹3L not obligated</span>
+                          </li>
+                          <li class="flex items-start gap-2">
+                            <span class="text-blue-600 flex-shrink-0">•</span>
+                            <span>Gold Loan EMI not considered</span>
+                          </li>
+                          <li class="flex items-start gap-2">
+                            <span class="text-blue-600 flex-shrink-0">•</span>
+                            <span>OD/Flexi only 1% of outstanding obligated</span>
+                          </li>
+                          <li class="flex items-start gap-2">
+                            <span class="text-blue-600 flex-shrink-0">•</span>
+                            <span>Last 6 EMIs ignored for Balance Transfer accounts</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <!-- 4. ENQUIRIES SUMMARY -->
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
+                      <h5 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+                        Credit Enquiries
+                      </h5>
+                      
+                      <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Last 30 Days</div>
+                          <div class="flex items-center gap-2">
+                            <div id="dash-enquiries-30" class="text-3xl font-bold text-purple-600">-</div>
+                            <span id="enquiry-30-warning" class="hidden text-xs font-semibold px-2 py-1 bg-red-100 text-red-700 rounded">⚠️ High</span>
+                          </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Last 90 Days</div>
+                          <div id="dash-enquiries-90" class="text-3xl font-bold text-pink-600">-</div>
+                        </div>
+                      </div>
+                      
+                      <div class="mt-4 text-xs text-gray-600 bg-white rounded-lg p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-1 text-blue-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+                        <strong>Info:</strong> Duplicate and top-up enquiries are automatically ignored in analysis.
+                      </div>
+                    </div>
+
+                    <!-- 5. USER CONFIRMATION BLOCK -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-300">
+                      <div class="flex items-start gap-4">
+                        <input type="checkbox" id="credit-confirmation-checkbox" class="w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-2 focus:ring-green-500 mt-1" disabled>
+                        <div class="flex-1">
+                          <label for="credit-confirmation-checkbox" class="text-sm font-semibold text-gray-900 cursor-pointer">
+                            I confirm the above credit details are correct to the best of my knowledge
+                          </label>
+                          <p class="text-xs text-gray-600 mt-2">
+                            This confirmation helps ensure accurate eligibility calculation. Any edits to EMI amounts will be logged for audit purposes.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Hidden fields to store parsed CIBIL data -->
+                    <input type="hidden" id="parsed-cibil-data" value="">
+                  </div>
+
+                  <!-- Old credit summary (fallback for manual entry) -->
+                  <div id="credit-dashboard" class="hidden mt-6 space-y-4">
+                    <div id="cibil-upload-container" class="relative p-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-xl border-2 border-dashed border-blue-300 transition-all hover:border-blue-500 hover:shadow-lg cursor-pointer group">
+                      <input id="cibil-pdf" type="file" accept=".pdf" class="hidden">
+                      
+                      <div class="text-center">
+                        <div class="mb-4 inline-flex justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-blue-500 group-hover:text-blue-600 transition transform group-hover:scale-110">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <path d="M12 13v6M9 16h6"></path>
+                          </svg>
+                        </div>
+                        <h5 class="text-lg font-bold text-gray-900 mb-1">Upload Your CIBIL Report</h5>
+                        <p class="text-sm text-gray-600 mb-4">or <span class="text-blue-600 font-semibold">browse to select</span></p>
+                        <p class="text-xs text-gray-500 mb-1">PDF format only • Maximum 10 MB</p>
+                        <p class="text-xs text-gray-500">Secure encrypted transfer</p>
+                      </div>
+                    </div>
+
+                    <!-- Password field for protected PDFs -->
+                    <div class="space-y-2">
+                      <label for="cibil-password" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        CIBIL Report Password
+                        <span class="text-xs text-gray-500 font-normal">(Optional)</span>
+                      </label>
+                      <div class="relative">
+                        <input id="cibil-password" type="password" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="Leave blank if your PDF is not password protected">
+                        <button id="toggle-password" type="button" class="absolute right-4 top-3 text-gray-500 hover:text-gray-700 transition">
+                          <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                      </div>
+                      <p class="text-xs text-gray-600">If protected, common formats: DOB (DD-MM-YYYY) or registered mobile number</p>
+                    </div>
+
+                    <!-- Scan Button -->
+                    <button id="btn-scan-cibil" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      Scan CIBIL Report
+                    </button>
+
+                    <div id="cibil-scan-status" class="hidden text-sm text-gray-600">
+                      <div class="flex items-center gap-2 animate-pulse">
+                        <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                        <span>Analyzing your CIBIL report...</span>
+                      </div>
+                    </div>
+
+                    <p class="text-xs text-gray-600 flex items-start gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600 flex-shrink-0 mt-0.5"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                      <span><strong>Privacy Protected:</strong> Your password is not stored. All data is encrypted & deleted after processing.</span>
+                    </p>
+
+                    <!-- OR Divider -->
+                    <div class="relative flex items-center my-6">
+                      <div class="flex-grow border-t-2 border-gray-200"></div>
+                      <span class="px-4 text-xs font-bold text-gray-600 bg-white uppercase tracking-wider">OR Enter Manually</span>
+                      <div class="flex-grow border-t-2 border-gray-200"></div>
+                    </div>
+
+                    <!-- MANUAL ENTRY SECTION: CIBIL Score -->
+                    <div class="space-y-2">
+                      <label for="cibil-score" class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"></path></svg>
+                        CIBIL Score
+                      </label>
+                      <input id="cibil-score" type="number" min="300" max="900" class="w-full rounded-lg border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" placeholder="e.g., 750">
+                      <p class="text-xs text-gray-600">Score range: 300–900 (Higher is better)</p>
+                    </div>
+
+                    <!-- CIBIL LOAN ACCOUNTS TABLE (Editable) -->
+                    <div id="loan-accounts-section" class="hidden mt-6 rounded-lg border border-gray-200 overflow-hidden">
+                      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 border-b border-gray-200">
+                        <h6 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M3 9h18M3 15h18M9 3v18M15 3v18"></path></svg>
+                          Credit Accounts (Fetched from CIBIL)
+                        </h6>
+                      </div>
+                      <div class="overflow-x-auto">
+                        <table id="cibil-accounts-table" class="w-full text-sm">
+                          <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Bank</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Loan Type</th>
+                              <th class="px-4 py-3 text-right font-semibold text-gray-900">EMI</th>
+                              <th class="px-4 py-3 text-right font-semibold text-gray-900">Outstanding</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Open Date</th>
+                              <th class="px-4 py-3 text-left font-semibold text-gray-900">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody id="cibil-table-body">
+                            <tr><td colspan="6" class="px-4 py-3 text-center text-gray-500">No data yet. Scan CIBIL or enter score above.</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="bg-gray-50 px-4 py-3 border-t border-gray-200 text-right">
+                        <div class="text-sm"><span class="text-gray-600">Total Live EMI:</span> <span id="total-live-emi" class="font-bold text-gray-900">₹0</span></div>
+                      </div>
+                    </div>
+
+                    <!-- Credit Summary Dashboard -->
+                    <div id="credit-dashboard" class="hidden mt-6 space-y-4">
                       <div class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 2v20m-7-7h14"></path></svg>
-                        Application Summary
+                        Your Credit Summary
                       </div>
-                      <div class="grid grid-cols-2 gap-3 text-sm">
-                        <div class="text-gray-600">Full Name</div><div id="sum-name" class="text-right font-semibold text-gray-900">-</div>
-                        <div class="text-gray-600">CIBIL Score</div><div id="sum-cibil" class="text-right font-semibold text-gray-900">-</div>
-                        <div class="text-gray-600">Monthly Salary</div><div id="sum-salary" class="text-right font-semibold text-gray-900">-</div>
-                        <div class="text-gray-600">Loan Amount</div><div id="sum-loan" class="text-right font-semibold text-gray-900">-</div>
+
+                      <div class="grid grid-cols-2 gap-4">
+                        <!-- CIBIL Score Card -->
+                        <div class="rounded-lg border border-gray-200 p-4 bg-gradient-to-br from-purple-50 to-white">
+                          <div class="text-xs text-gray-600 font-medium mb-2">CIBIL Score</div>
+                          <div id="dash-cibil-score" class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">-</div>
+                          <div id="dash-cibil-rating" class="text-xs font-medium px-2 py-1 rounded-full bg-gray-100 inline-block mt-2">-</div>
+                        </div>
+
+                        <!-- EMI Obligations Card -->
+                        <div class="rounded-lg border border-gray-200 p-4 bg-gradient-to-br from-orange-50 to-white">
+                          <div class="text-xs text-gray-600 font-medium mb-2">Total Monthly EMI</div>
+                          <div id="dash-total-emi" class="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">₹-</div>
+                          <p class="text-xs text-gray-500 mt-1">Updated from CIBIL</p>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+
+                <!-- Step 4: Eligibility Result -->
+                <div class="step hidden" data-step="4">
+                  <h4 class="text-xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-green-600"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    Your Loan Eligibility Result
+                  </h4>
+                  <p class="text-sm text-gray-600 mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+                    Based on your profile, credit score, and income analysis
+                  </p>
+
+                  <!-- LOADING STATE -->
+                  <div id="eligibility-loading" class="text-center py-12">
+                    <div class="inline-flex items-center gap-3">
+                      <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                      <span class="text-gray-700 font-medium">Calculating your eligibility across multiple banks...</span>
+                    </div>
+                  </div>
+
+                  <!-- RESULTS CONTAINER (Hidden until loaded) -->
+                  <div id="eligibility-results" class="hidden space-y-6">
+                    
+                    <!-- 1. ELIGIBILITY SUMMARY (Top Banner) -->
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
+                      <h5 class="text-sm font-bold mb-4 flex items-center gap-2 opacity-90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"></path><path d="M9 9h6v6H9z"></path></svg>
+                        FOIR Calculation Summary
+                      </h5>
+                      
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                          <div class="text-xs opacity-80 mb-1">Net Monthly Salary</div>
+                          <div id="result-net-salary" class="text-2xl font-bold">₹-</div>
+                        </div>
+                        <div>
+                          <div class="text-xs opacity-80 mb-1">FOIR Used</div>
+                          <div id="result-foir-percent" class="text-2xl font-bold">-</div>
+                        </div>
+                        <div>
+                          <div class="text-xs opacity-80 mb-1">Existing EMI</div>
+                          <div id="result-existing-emi" class="text-2xl font-bold">₹-</div>
+                        </div>
+                        <div class="bg-white/20 rounded-lg p-3 -m-3">
+                          <div class="text-xs font-semibold mb-1">AVAILABLE EMI</div>
+                          <div id="result-available-emi" class="text-3xl font-bold">₹-</div>
+                        </div>
+                      </div>
+
+                      <div class="mt-4 text-xs opacity-80 bg-white/10 rounded-lg px-4 py-2">
+                        💡 Available EMI = (Salary × FOIR%) - Existing Obligations
+                      </div>
+                    </div>
+
+                    <!-- 2. PRODUCT ELIGIBILITY CARDS -->
+                    <div>
+                      <h5 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        Product-wise Eligibility
+                      </h5>
+                      
+                      <div class="grid md:grid-cols-3 gap-4">
+                        <!-- Personal Loan 5Y -->
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-300 shadow-sm hover:shadow-md transition">
+                          <div class="flex items-start justify-between mb-3">
+                            <div class="bg-blue-600 text-white rounded-lg px-3 py-1 text-xs font-bold">RECOMMENDED</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                          </div>
+                          <h6 class="text-lg font-bold text-gray-900 mb-1">Personal Loan – 5 Years</h6>
+                          <div class="text-3xl font-bold text-blue-600 mb-3" id="pl-5y-amount">₹-</div>
+                          <div class="text-xs text-gray-600 space-y-1">
+                            <div class="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              EMI Basis: ₹1,950/lakh
+                            </div>
+                            <div class="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              Fixed tenure, predictable EMI
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Personal Loan 6Y -->
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200 shadow-sm hover:shadow-md transition">
+                          <div class="flex items-start justify-between mb-3">
+                            <div class="bg-purple-100 text-purple-700 rounded-lg px-3 py-1 text-xs font-bold">OPTIONAL</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                          </div>
+                          <h6 class="text-lg font-bold text-gray-900 mb-1">Personal Loan – 6 Years</h6>
+                          <div class="text-3xl font-bold text-purple-600 mb-3" id="pl-6y-amount">₹-</div>
+                          <div class="text-xs text-gray-600 space-y-1">
+                            <div class="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              EMI Basis: ₹2,150/lakh
+                            </div>
+                            <div class="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              Longer tenure, lower EMI
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Overdraft / Flexi -->
+                        <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-200 shadow-sm hover:shadow-md transition">
+                          <div class="flex items-start justify-between mb-3">
+                            <div class="bg-orange-100 text-orange-700 rounded-lg px-3 py-1 text-xs font-bold">FLEXIBLE</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-orange-600"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 2.2"></path></svg>
+                          </div>
+                          <h6 class="text-lg font-bold text-gray-900 mb-1">Overdraft / Flexi Loan</h6>
+                          <div class="text-3xl font-bold text-orange-600 mb-3" id="od-amount">₹-</div>
+                          <div class="text-xs text-gray-600 space-y-1">
+                            <div class="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              EMI Basis: ₹2,250/lakh
+                            </div>
+                            <div class="flex items-center gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              Withdraw as needed, higher flexibility
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 3. BANK RECOMMENDATIONS -->
+                    <div>
+                      <h5 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                        Bank Recommendations (Ranked by Approval Probability)
+                      </h5>
+                      
+                      <div id="bank-recommendations" class="space-y-4">
+                        <!-- Bank cards will be populated here -->
+                        <div class="text-center text-gray-500 py-8">Loading bank recommendations...</div>
+                      </div>
+                    </div>
+
+                    <!-- 4. WHY THIS ELIGIBILITY? (Expandable) -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 overflow-hidden">
+                      <button id="btn-explainability-toggle" class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-green-100/50 transition">
+                        <div class="flex items-center gap-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                          <span class="text-sm font-bold text-gray-900">Why this eligibility? (Click to expand)</span>
+                        </div>
+                        <svg id="explainability-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-600 transition-transform"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </button>
+                      
+                      <div id="explainability-content" class="hidden px-6 pb-6 pt-2">
+                        <div class="bg-white rounded-lg p-4 space-y-3 text-sm text-gray-700">
+                          <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600 flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div>
+                              <strong id="explain-company" class="text-gray-900">Company Category A</strong> → Higher FOIR allowed (up to 65%)
+                            </div>
+                          </div>
+                          <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600 flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div>
+                              <strong id="explain-location" class="text-gray-900">Prime metro location</strong> → Better eligibility & approval rates
+                            </div>
+                          </div>
+                          <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600 flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div>
+                              <strong id="explain-emi" class="text-gray-900">Low EMI burden</strong> → More available EMI for new loan
+                            </div>
+                          </div>
+                          <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600 flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div>
+                              <strong id="explain-cibil" class="text-gray-900">Good CIBIL score (750+)</strong> → Higher approval probability across banks
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 5. DISCLAIMER & CTA -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
+                      <div class="flex items-start gap-3 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600 flex-shrink-0 mt-0.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22l1.09-7.86-5-4.87 6.91-1.01z"></path></svg>
+                        <div class="text-sm text-gray-700">
+                          <strong class="text-gray-900">Important:</strong> Eligibility shown is indicative and subject to bank verification, policy checks, and document validation. Final approval amount may vary based on additional criteria.
+                        </div>
+                      </div>
+                      
+                      <button id="btn-apply-expert" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-4 rounded-lg font-bold text-lg shadow-lg hover:shadow-xl transition flex items-center justify-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                        Apply with Expert Assistance
+                      </button>
+                      
+                      <p class="text-xs text-gray-600 mt-3 text-center">
+                        Our loan experts will guide you through bank selection, documentation, and approval process
+                      </p>
+                    </div>
+
+                  </div>
+
+                  <!-- ERROR STATE -->
+                  <div id="eligibility-error" class="hidden text-center py-12">
+                    <div class="inline-flex flex-col items-center gap-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-600"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                      <div>
+                        <div class="text-lg font-bold text-gray-900 mb-2">Unable to calculate eligibility</div>
+                        <div class="text-sm text-gray-600" id="error-message">Please try again or contact support</div>
+                      </div>
+                      <button id="btn-retry-eligibility" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">
+                        Retry Calculation
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
@@ -281,6 +942,17 @@
 
     <script>
       (function(){
+        // Pincode master data
+        var pincodeData = [];
+        
+        // Load pincode master data on page load
+        fetch('/data/pincode_master.json')
+          .then(r => r.json())
+          .then(data => {
+            pincodeData = data;
+          })
+          .catch(e => console.log('Pincode data load failed:', e));
+
         var current = 1;
         var total = 4;
         var steps = document.querySelectorAll('#steps .step');
@@ -289,23 +961,64 @@
         var btnNext = document.getElementById('btn-next');
         var btnBack = document.getElementById('btn-back');
 
+        // Step 1 inputs
         var inpName = document.getElementById('name');
+        var inpMobile = document.getElementById('mobile');
         var inpPincode = document.getElementById('pincode');
-        var inpCategory = document.getElementById('category');
-        var inpSalary = document.getElementById('turnover');
-        var inpOblig = document.getElementById('emis');
-        var inpCibil = document.getElementById('cibil');
-        var inpLoan = document.getElementById('loan-amount');
+        var inpCity = document.getElementById('city');
+        var inpState = document.getElementById('state');
+        var pincodesuggestions = document.getElementById('pincode-suggestions');
+
+        // Step 2 inputs
+        var inpSalarySlip = document.getElementById('salary-slip');
+        var inpSalarySlipPassword = document.getElementById('salary-slip-password');
+        var passwordSection = document.getElementById('password-section');
+        var inpCompanyName = document.getElementById('company-name');
+        var inpNetSalary = document.getElementById('net-salary');
+        var inpMonthlyObligations = document.getElementById('monthly-obligations');
+        var foirValue = document.getElementById('foir-value');
+        var foirStatusText = document.getElementById('foir-status-text');
+        var companySuggestions = document.getElementById('company-suggestions');
+        var companyCategorySection = document.getElementById('company-category-section');
+        var companyCategory = document.getElementById('company-category');
+        var emailAvailable = document.getElementById('email-available');
+        var pfDeduction = document.getElementById('pf-deduction');
+
+        // Step 3 inputs
+        var inpCibilPDF = document.getElementById('cibil-pdf');
+        var inpCibilPassword = document.getElementById('cibil-password');
+        var inpCibilScore = document.getElementById('cibil-score');
+        var btnScanCibil = document.getElementById('btn-scan-cibil');
+        var cibilScanStatus = document.getElementById('cibil-scan-status');
+        var creditDashboard = document.getElementById('credit-dashboard');
+        var loanAccountsSection = document.getElementById('loan-accounts-section');
+        var cibilTableBody = document.getElementById('cibil-table-body');
+        var totalLiveEmiDisplay = document.getElementById('total-live-emi');
+        var dashCibilScore = document.getElementById('dash-cibil-score');
+        var dashCibilRating = document.getElementById('dash-cibil-rating');
+        var dashTotalEmi = document.getElementById('dash-total-emi');
+
+        // Step 4 inputs
+        var inpLoanAmount = document.getElementById('loan-amount');
         var inpTenure = document.getElementById('tenure');
 
-        var obligationValue = document.getElementById('obligation-value');
-        var creditRating = document.getElementById('credit-rating');
-
+        // Summary fields
         var sumName = document.getElementById('sum-name');
-        var sumCibil = document.getElementById('sum-cibil');
         var sumSalary = document.getElementById('sum-salary');
+        var sumCibil = document.getElementById('sum-cibil');
         var sumLoan = document.getElementById('sum-loan');
+        var sumFOIR = document.getElementById('sum-foir');
+        var sumStatus = document.getElementById('sum-status');
 
+        // Dashboard fields
+        var dashCibilScore = document.getElementById('dash-cibil-score');
+        var dashCibilRating = document.getElementById('dash-cibil-rating');
+        var dashTotalEMI = document.getElementById('dash-total-emi');
+        var dashLiveLoans = document.getElementById('dash-live-loans');
+        var dashEnquiries = document.getElementById('dash-enquiries');
+        var dashLoansTable = document.getElementById('dash-loans-table');
+
+        // Result modal
         var modal = document.getElementById('result-modal');
         var modalTitle = document.getElementById('modal-title');
         var modalBody = document.getElementById('modal-body');
@@ -313,8 +1026,9 @@
         var modalOffers = document.getElementById('modal-offers');
 
         function fmtINR(v){
-          if(!v) return '-';
-          var num = Number(String(v).replace(/[^0-9.-]+/g, '')) || 0;
+          if(!v || isNaN(v)) return '₹-';
+          var num = parseFloat(v) || 0;
+          if(num === 0) return '₹-';
           return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits:0 }).format(num);
         }
 
@@ -346,48 +1060,1013 @@
           updateIndicators(n);
           updateProgress(n);
           btnBack.disabled = (n===1);
-          btnNext.textContent = (n===total) ? 'Check Eligibility' : 'Next';
+          btnNext.textContent = (n===total) ? 'Apply Now' : 'Next';
+          
+          // Trigger eligibility calculation when Step 4 is shown
+          if(n === 4){
+            calculateEligibilityResults();
+          }
         }
 
         function validateStep(n){
           if(n===1){
             if(!inpName.value.trim()){ alert('Please enter full name'); inpName.focus(); return false; }
+            if(!/^[0-9]{10}$/.test(inpMobile.value.trim())){ alert('Please enter valid 10-digit mobile number'); inpMobile.focus(); return false; }
             if(!/^[0-9]{6}$/.test(inpPincode.value.trim())){ alert('Please enter valid 6-digit pincode'); inpPincode.focus(); return false; }
           }
           if(n===2){
-            var s = Number(String(inpSalary.value).replace(/[^0-9.-]+/g,'')) || 0;
-            if(s<=0){ alert('Please enter your monthly salary'); inpSalary.focus(); return false; }
+            if(!inpCompanyName.value.trim()){ alert('Please enter company name'); inpCompanyName.focus(); return false; }
+            var s = parseFloat(inpNetSalary.value) || 0;
+            if(s<=0){ alert('Please enter your monthly salary'); inpNetSalary.focus(); return false; }
+            var o = parseFloat(inpMonthlyObligations.value) || 0;
+            if(o<0){ alert('Please enter monthly obligations'); inpMonthlyObligations.focus(); return false; }
+          }
+          if(n===3){
+            var c = parseFloat(inpCibilScore.value) || 0;
+            if(c<=0){ 
+              alert('Please scan CIBIL PDF or enter CIBIL score manually'); 
+              inpCibilScore.focus(); 
+              return false; 
+            }
+            // Check if credit dashboard is shown (CIBIL scanned)
+            var confirmCheckbox = document.getElementById('credit-confirmation-checkbox');
+            if(confirmCheckbox && !confirmCheckbox.disabled && !confirmCheckbox.checked){
+              alert('Please confirm that your credit details are correct');
+              confirmCheckbox.focus();
+              return false;
+            }
+          }
+          if(n===4){
+            if(!inpTenure.value){ alert('Please select loan tenure'); inpTenure.focus(); return false; }
           }
           return true;
         }
 
-        function updateObligation(){
-          var s = Number(String(inpSalary.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var o = Number(String(inpOblig.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var pct = s>0 ? (o/s*100) : 0;
-          obligationValue.textContent = pct ? pct.toFixed(1) + '%' : '0.0%';
+        // Auto-fetch city/state from pincode (using master data)
+        var cityStateContainer = document.getElementById('city-state-container');
+        inpPincode.addEventListener('blur', function(){
+          var pc = inpPincode.value.trim();
+          if(pc.length===6){
+            var match = pincodeData.find(d => d.pincode === pc);
+            if(match){
+              inpCity.textContent = match.district;
+              inpState.textContent = match.state;
+              cityStateContainer.classList.remove('hidden');
+            } else {
+              inpCity.textContent = 'City (Unknown)';
+              inpState.textContent = 'State (Unknown)';
+              cityStateContainer.classList.remove('hidden');
+            }
+          } else {
+            cityStateContainer.classList.add('hidden');
+          }
+        });
+
+        // PIN code suggestions (after 3 digits) - using master data
+        inpPincode.addEventListener('input', function(){
+          var value = this.value.trim();
+          pincodesuggestions.innerHTML = '';
+          
+          if(value.length >= 3 && value.length < 6){
+            // Find all pincodes starting with the prefix
+            var matches = pincodeData
+              .filter(d => d.pincode.startsWith(value))
+              .reduce((unique, d) => {
+                if(!unique.find(u => u.pincode === d.pincode)){
+                  unique.push(d);
+                }
+                return unique;
+              }, [])
+              .slice(0, 5); // Limit to 5 suggestions
+            
+            if(matches.length > 0){
+              pincodesuggestions.classList.remove('hidden');
+              matches.forEach(function(match){
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-full text-left px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded border border-blue-200 transition';
+                btn.textContent = match.pincode + ' - ' + match.district + ', ' + match.state;
+                btn.addEventListener('click', function(e){
+                  e.preventDefault();
+                  inpPincode.value = match.pincode;
+                  pincodesuggestions.innerHTML = '';
+                  pincodesuggestions.classList.add('hidden');
+                  inpPincode.dispatchEvent(new Event('blur'));
+                });
+                pincodesuggestions.appendChild(btn);
+              });
+            }
+          } else {
+            pincodesuggestions.classList.add('hidden');
+          }
+        });
+
+        // Auto-capitalize full name
+        inpName.addEventListener('input', function(){
+          this.value = this.value.toUpperCase();
+          updateSummary();
+        });
+
+        // Company name suggestions
+        var mockCompanies = ['TCS', 'Infosys', 'Wipro', 'HCL', 'Accenture', 'Google', 'Microsoft', 'Amazon', 'IBM', 'Cognizant'];
+        inpCompanyName.addEventListener('input', function(){
+          var val = this.value.trim().toUpperCase();
+          companySuggestions.innerHTML = '';
+          
+          if(val.length > 0){
+            var matches = mockCompanies.filter(c => c.includes(val));
+            if(matches.length > 0){
+              companySuggestions.classList.remove('hidden');
+              matches.forEach(function(company){
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-full text-left px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded border border-blue-200 transition';
+                btn.textContent = company;
+                btn.addEventListener('click', function(e){
+                  e.preventDefault();
+                  inpCompanyName.value = company;
+                  companySuggestions.innerHTML = '';
+                  companySuggestions.classList.add('hidden');
+                  // Show company category
+                  var categories = {
+                    'TCS': 'A', 'Infosys': 'A', 'Wipro': 'A', 'HCL': 'A', 'Accenture': 'A',
+                    'Google': 'A', 'Microsoft': 'A', 'Amazon': 'A', 'IBM': 'A', 'Cognizant': 'A'
+                  };
+                  companyCategory.textContent = categories[company] || 'B';
+                  companyCategorySection.classList.remove('hidden');
+                });
+                companySuggestions.appendChild(btn);
+              });
+            }
+          } else {
+            companySuggestions.classList.add('hidden');
+          }
+        });
+
+        // Drag & Drop for Salary Slip Upload
+        var salarySlipContainer = document.getElementById('salary-slip-container');
+        var salarySlipInput = document.getElementById('salary-slip');
+        var filePreview = document.getElementById('file-preview');
+        var fileName = document.getElementById('file-name');
+        
+        var cibilUploadContainer = document.getElementById('cibil-upload-container');
+        var cibilInput = document.getElementById('cibil-pdf');
+
+        // CIBIL UPLOAD: Click to upload
+        cibilUploadContainer.addEventListener('click', function(){
+          cibilInput.click();
+        });
+
+        // CIBIL UPLOAD: Handle file selection
+        cibilInput.addEventListener('change', function(){
+          if(this.files && this.files[0]){
+            var file = this.files[0];
+            if(file.type === 'application/pdf' && file.size <= 10*1024*1024){
+              updateCibilUploadUI(file.name);
+            } else if(file.type !== 'application/pdf'){
+              alert('Please upload a PDF file only');
+            } else {
+              alert('File size exceeds 10MB limit');
+            }
+          }
+        });
+
+        // CIBIL UPLOAD: Handle drag over
+        cibilUploadContainer.addEventListener('dragover', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.add('bg-blue-100', 'border-blue-500');
+        });
+
+        cibilUploadContainer.addEventListener('dragleave', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.remove('bg-blue-100', 'border-blue-500');
+        });
+
+        // CIBIL UPLOAD: Handle drop
+        cibilUploadContainer.addEventListener('drop', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.remove('bg-blue-100', 'border-blue-500');
+          
+          if(e.dataTransfer.files && e.dataTransfer.files[0]){
+            var file = e.dataTransfer.files[0];
+            if(file.type === 'application/pdf' && file.size <= 10*1024*1024){
+              cibilInput.files = e.dataTransfer.files;
+              updateCibilUploadUI(file.name);
+            } else if(file.type !== 'application/pdf'){
+              alert('Please upload a PDF file only');
+            } else {
+              alert('File size exceeds 10MB limit');
+            }
+          }
+        });
+
+        function updateCibilUploadUI(filename){
+          // Update the container to show file selected
+          var icon = cibilUploadContainer.querySelector('svg');
+          icon.classList.add('text-green-500');
+          
+          // Add a file preview badge
+          var badge = cibilUploadContainer.querySelector('.text-lg');
+          if(!badge.querySelector('.file-badge')){
+            var fileBadge = document.createElement('div');
+            fileBadge.className = 'file-badge mt-2 inline-flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold';
+            fileBadge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> ' + filename.substring(0, 20);
+            badge.appendChild(fileBadge);
+          }
         }
 
-        function updateCredit(){
-          var c = Number(String(inpCibil.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var label = '-';
-          var color = 'text-gray-700';
-          if(c>=750){ label = 'Excellent'; color = 'text-green-700'; }
-          else if(c>=700){ label = 'Good'; color = 'text-yellow-700'; }
-          else if(c>=650){ label = 'Fair'; color = 'text-orange-700'; }
-          else if(c>0){ label = 'Poor'; color = 'text-red-700'; }
-          creditRating.textContent = label;
-          creditRating.className = 'text-sm font-semibold px-3 py-1 rounded-full ' + color;
+        // Click to upload
+        salarySlipContainer.addEventListener('click', function(){
+          salarySlipInput.click();
+        });
+
+        // Handle file selection
+        salarySlipInput.addEventListener('change', function(){
+          if(this.files && this.files[0]){
+            handleSalarySlipUpload(this.files[0]);
+          }
+        });
+
+        // Handle drag over
+        salarySlipContainer.addEventListener('dragover', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.add('bg-blue-100', 'border-blue-500');
+        });
+
+        salarySlipContainer.addEventListener('dragleave', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.remove('bg-blue-100', 'border-blue-500');
+        });
+
+        // Handle drop
+        salarySlipContainer.addEventListener('drop', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          this.classList.remove('bg-blue-100', 'border-blue-500');
+          
+          if(e.dataTransfer.files && e.dataTransfer.files[0]){
+            var file = e.dataTransfer.files[0];
+            if(file.type === 'application/pdf' && file.size <= 10*1024*1024){
+              salarySlipInput.files = e.dataTransfer.files;
+              handleSalarySlipUpload(file);
+            } else if(file.type !== 'application/pdf'){
+              alert('Please upload a PDF file only');
+            } else {
+              alert('File size exceeds 10MB limit');
+            }
+          }
+        });
+
+        function handleSalarySlipUpload(file){
+          fileName.textContent = file.name;
+          filePreview.classList.remove('hidden');
+          
+          // Show password field for potential extraction
+          passwordSection.classList.remove('hidden');
+          
+          // Simulate auto-extract (mock data)
+          setTimeout(function(){
+            inpCompanyName.value = 'TCS';
+            inpNetSalary.value = '75000';
+            companyCategory.textContent = 'A';
+            companyCategorySection.classList.remove('hidden');
+            updateFOIR();
+            
+            // Show success toast
+            var toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg text-sm flex items-center gap-2 animate-pulse';
+            toast.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Auto-extracted: Company, Salary & Category';
+            document.body.appendChild(toast);
+            setTimeout(function(){ toast.remove(); }, 3000);
+          }, 800);
         }
+
+        function updateFOIR(){
+          var s = parseFloat(inpNetSalary.value) || 0;
+          var o = parseFloat(inpMonthlyObligations.value) || 0;
+          var pct = s>0 ? (o/s*100) : 0;
+          var foirPct = (pct || 0).toFixed(1);
+          foirValue.textContent = foirPct + '%';
+          
+          // Update FOIR box color based on percentage with website theme (blue/indigo/purple)
+          var foirBox = document.getElementById('foir-box');
+          if(pct > 60){
+            // High risk - Red warning
+            foirBox.className = 'mt-6 rounded-xl p-6 bg-gradient-to-br from-red-50 via-red-50 to-rose-50 border border-red-300 shadow-sm';
+            foirValue.style.backgroundImage = 'linear-gradient(to bottom right, rgb(220, 38, 38), rgb(190, 24, 93))';
+            foirStatusText.textContent = 'High - May face challenges (>60%)';
+          } else if(pct > 40){
+            // Warning - Orange/Amber tone matching website
+            foirBox.className = 'mt-6 rounded-xl p-6 bg-gradient-to-br from-orange-50 via-amber-50 to-orange-50 border border-orange-300 shadow-sm';
+            foirValue.style.backgroundImage = 'linear-gradient(to bottom right, rgb(234, 88, 12), rgb(217, 119, 6))';
+            foirStatusText.textContent = 'Close to limit (40-60%) - Monitor closely';
+          } else if(pct > 0){
+            // Good - Blue/Indigo (website theme)
+            foirBox.className = 'mt-6 rounded-xl p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-indigo-300 shadow-sm hover:shadow-md transition';
+            foirValue.style.backgroundImage = 'linear-gradient(to bottom right, rgb(37, 99, 235), rgb(79, 70, 229))';
+            foirStatusText.textContent = 'Good - Excellent for new loans';
+          } else {
+            // Excellent - Vibrant blue/indigo
+            foirBox.className = 'mt-6 rounded-xl p-6 bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-50 border border-blue-300 shadow-sm hover:shadow-md transition';
+            foirValue.style.backgroundImage = 'linear-gradient(to bottom right, rgb(59, 130, 246), rgb(34, 197, 94))';
+            foirStatusText.textContent = 'Excellent - No obligations • Maximum eligibility';
+          }
+          foirValue.style.webkitBackgroundClip = 'text';
+          foirValue.style.webkitTextFillColor = 'transparent';
+          foirValue.style.backgroundClip = 'text';
+          updateSummary();
+        }
+
+        // Real-time FOIR calculation
+        inpNetSalary.addEventListener('input', updateFOIR);
+        inpMonthlyObligations.addEventListener('input', updateFOIR);
+
+        function getCibilRating(score){
+          score = parseFloat(score) || 0;
+          if(score>=750) return {label: 'Excellent', color: 'text-green-700 bg-green-50'};
+          if(score>=700) return {label: 'Good', color: 'text-yellow-700 bg-yellow-50'};
+          if(score>=650) return {label: 'Fair', color: 'text-orange-700 bg-orange-50'};
+          if(score>0) return {label: 'Poor', color: 'text-red-700 bg-red-50'};
+          return {label: '-', color: 'text-gray-700 bg-gray-50'};
+        }
+
+        // Show toast notification
+        function showToast(message, type){
+          var bgColor = type === 'success' ? 'bg-green-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500';
+          var icon = type === 'success' ? 
+            '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>' :
+            '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>';
+          
+          var toast = document.createElement('div');
+          toast.className = 'fixed bottom-4 right-4 ' + bgColor + ' text-white px-4 py-3 rounded-lg shadow-lg text-sm flex items-center gap-2 animate-slideUp z-50';
+          toast.innerHTML = icon + ' ' + message;
+          document.body.appendChild(toast);
+          setTimeout(function(){ toast.remove(); }, 3500);
+        }
+
+        function updateCibilDisplay(){
+          var score = parseFloat(inpCibilScore.value) || 0;
+          var rating = getCibilRating(score);
+          
+          dashCibilScore.textContent = score>0 ? score : '-';
+          dashCibilRating.textContent = rating.label;
+          dashCibilRating.className = 'text-xs font-semibold px-3 py-1 rounded-full ' + rating.color;
+          
+          var mockEMI = score>=700 ? Math.round(Math.random()*15000 + 5000) : Math.round(Math.random()*25000 + 10000);
+          dashTotalEMI.textContent = fmtINR(mockEMI);
+          inpMonthlyObligations.value = mockEMI;
+          updateFOIR();
+          
+          dashLiveLoans.textContent = score>=700 ? Math.floor(Math.random()*3+1) : Math.floor(Math.random()*5+2);
+          dashEnquiries.textContent = Math.floor(Math.random()*5+1);
+          
+          updateSummary();
+        }
+
+        inpCibilScore.addEventListener('input', function(){
+          if(this.value) updateCibilDisplay();
+        });
+
+        // Toggle password visibility
+        var togglePasswordBtn = document.getElementById('toggle-password');
+        var eyeIcon = document.getElementById('eye-icon');
+        
+        togglePasswordBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          var isPassword = inpCibilPassword.type === 'password';
+          inpCibilPassword.type = isPassword ? 'text' : 'password';
+          
+          // Update icon (eye open/closed)
+          if(isPassword){
+            eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+          } else {
+            eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+          }
+        });
+
+        btnScanCibil.addEventListener('click', function(){
+          var pdf = inpCibilPDF.files[0];
+          var pwd = inpCibilPassword.value;
+          if(!pdf){ alert('Please select CIBIL PDF'); return; }
+          
+          console.log('Scanning CIBIL PDF with password length:', pwd.length > 0 ? pwd.length + ' chars' : 'no password');
+          
+          cibilScanStatus.classList.remove('hidden');
+          btnScanCibil.disabled = true;
+          
+          // Send to backend API for real CIBIL parsing
+          var formData = new FormData();
+          formData.append('file', pdf);
+          formData.append('password', pwd);
+          
+          fetch('/api/scan-cibil', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(result => {
+            if(result.error){
+              console.error('API Error:', result.error);
+              alert('Error: ' + result.error);
+              cibilScanStatus.classList.add('hidden');
+              btnScanCibil.disabled = false;
+              return;
+            }
+            
+            console.log('CIBIL Data Received:', result);
+            
+            // Store parsed CIBIL data for eligibility calculation
+            var parsedCibilData = result.cibil_data || result;
+            document.getElementById('parsed-cibil-data').value = JSON.stringify(parsedCibilData);
+            
+            // Update CIBIL score
+            if(result.cibilScore || parsedCibilData.credit_score?.cibil_score){
+              var score = result.cibilScore || parsedCibilData.credit_score.cibil_score;
+              inpCibilScore.value = score;
+            }
+            
+            // Update Step-2 obligations with net EMI for FOIR
+            var netObligation = parsedCibilData.obligations?.net_obligation_for_foir || result.totalLiveEmi || 0;
+            inpMonthlyObligations.value = netObligation;
+            updateFOIR();
+            
+            // Populate the new Credit Dashboard
+            populateCreditDashboard(parsedCibilData);
+            
+            // Hide upload section, show dashboard
+            document.getElementById('credit-upload-section').classList.add('hidden');
+            document.getElementById('credit-dashboard-main').classList.remove('hidden');
+            
+            cibilScanStatus.classList.add('hidden');
+            btnScanCibil.disabled = false;
+            
+            // Success toast
+            showToast('✅ CIBIL report analyzed successfully!', 'success');
+          })
+          .catch(err => {
+            console.error('API Error:', err);
+            alert('Failed to process CIBIL report. Please try again.');
+            cibilScanStatus.classList.add('hidden');
+            btnScanCibil.disabled = false;
+          });
+        });
+
+        // 🤖 AI SCAN BUTTON
+        var btnScanCibilAI = document.getElementById('btn-scan-cibil-ai');
+        if (btnScanCibilAI) {
+          btnScanCibilAI.addEventListener('click', function(){
+            var pdf = inpCibilPDF.files[0];
+            var pwd = inpCibilPassword.value;
+            if(!pdf){ alert('Please select CIBIL PDF'); return; }
+            
+            console.log('🤖 AI Scanning CIBIL PDF...');
+            
+            cibilScanStatus.classList.remove('hidden');
+            cibilScanStatus.innerHTML = '<div class="flex items-center gap-2 animate-pulse"><div class="w-2 h-2 rounded-full bg-purple-600"></div><span>🤖 AI is analyzing your CIBIL report intelligently...</span></div>';
+            btnScanCibilAI.disabled = true;
+            
+            var formData = new FormData();
+            formData.append('file', pdf);
+            formData.append('password', pwd);
+            
+            // Call AI analysis endpoint
+            fetch('/api/ai/analyze-cibil', {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+              if(result.error){
+                console.error('🤖 AI Error:', result.error);
+                alert('AI Analysis Error: ' + result.error + '\n\nMake sure OPENAI_API_KEY is set in server .env file');
+                cibilScanStatus.classList.add('hidden');
+                btnScanCibilAI.disabled = false;
+                return;
+              }
+              
+              console.log('🤖 AI Analysis complete:', result);
+              
+              var cibilData = result.cibil_data;
+              document.getElementById('parsed-cibil-data').value = JSON.stringify(cibilData);
+              
+              // Update form fields
+              inpCibilScore.value = cibilData.credit_score?.cibil_score || 0;
+              var netObligation = (cibilData.credit_accounts || []).reduce((sum, acc) => sum + (acc.emi_amount || 0), 0);
+              inpMonthlyObligations.value = netObligation;
+              updateFOIR();
+              
+              // Show AI insights as toast
+              if(result.ai_insights && result.ai_insights.insights && result.ai_insights.insights.length > 0){
+                var topInsight = result.ai_insights.insights[0];
+                showToast('💡 AI Insight: ' + topInsight, 'info');
+              }
+              
+              // Populate dashboard
+              populateCreditDashboard(cibilData);
+              
+              document.getElementById('credit-upload-section').classList.add('hidden');
+              document.getElementById('credit-dashboard-main').classList.remove('hidden');
+              
+              cibilScanStatus.classList.add('hidden');
+              btnScanCibilAI.disabled = false;
+              
+              showToast('✅ AI Analysis Complete! Score: ' + cibilData.credit_score.cibil_score + ' | Risk: ' + (result.ai_insights?.risk_level || 'N/A'), 'success');
+              
+              // Auto-calculate AI eligibility after analysis
+              calculateAIEligibility(cibilData);
+            })
+            .catch(err => {
+              console.error('🤖 AI API Error:', err);
+              alert('AI analysis failed. Please ensure OPENAI_API_KEY is configured and valid.');
+              cibilScanStatus.classList.add('hidden');
+              btnScanCibilAI.disabled = false;
+            });
+          });
+        }
+        
+        // 🤖 AI Eligibility Calculation Function
+        async function calculateAIEligibility(cibilData){
+          try {
+            console.log('🤖 Calling AI eligibility calculator...');
+            var response = await fetch('/api/ai/calculate-eligibility', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                cibil_data: cibilData,
+                customer_profile: {
+                  name: inpName.value || 'Applicant',
+                  net_salary: parseFloat(inpNetSalary.value) || 50000,
+                  company_name: inpCompanyName.value || 'N/A'
+                }
+              })
+            });
+            
+            var result = await response.json();
+            if(result.success && result.eligibility){
+              console.log('🤖 AI Eligibility:', result.eligibility);
+              // Can display AI eligibility details on dashboard if needed
+            }
+          } catch (err) {
+            console.warn('🤖 AI eligibility fetch failed (optional):', err.message);
+          }
+        }
+
+        // Populate Credit Dashboard with parsed CIBIL data
+        function populateCreditDashboard(cibilData){
+          console.log('Populating Credit Dashboard with:', cibilData);
+          
+          var creditScore = cibilData.credit_score || {};
+          var accounts = cibilData.credit_accounts || [];
+          var obligations = cibilData.obligations || {};
+          var enquiries = cibilData.enquiries || {};
+          var normalizedCredit = cibilData.normalized_credit || {};
+          
+          // 1. Credit Score Summary
+          var score = creditScore.cibil_score || 0;
+          var rating = getCibilRating(score);
+          document.getElementById('dash-cibil-score').textContent = score || '-';
+          document.getElementById('dash-cibil-band').textContent = rating.label;
+          document.getElementById('dash-cibil-band').className = 'text-xs font-semibold px-2 py-1 rounded-full ' + rating.color;
+          
+          // Credit age
+          var ageMonths = creditScore.credit_vintage_months || 0;
+          var years = Math.floor(ageMonths / 12);
+          var months = ageMonths % 12;
+          document.getElementById('dash-credit-age').textContent = years > 0 ? years + 'Y ' + months + 'M' : months + 'M';
+          
+          // Risk band
+          var riskBand = normalizedCredit.risk_band || (score >= 750 ? 'LOW' : score >= 700 ? 'MEDIUM' : 'HIGH');
+          document.getElementById('dash-risk-band').textContent = riskBand;
+          document.getElementById('dash-risk-band').className = 'text-lg font-bold ' + 
+            (riskBand === 'LOW' ? 'text-green-600' : riskBand === 'MEDIUM' ? 'text-yellow-600' : 'text-red-600');
+          
+          // Live loans count
+          var liveLoans = accounts.filter(acc => acc.account_status === 'LIVE').length;
+          document.getElementById('dash-live-loans').textContent = liveLoans;
+          
+          // 2. Loan Accounts Table
+          renderCreditAccountsTable(accounts);
+          
+          // 3. EMI & Obligation Summary
+          var totalEMI = obligations.total_emi_from_cibil || 0;
+          var excludedEMI = obligations.excluded_obligation || 0;
+          var netEMI = obligations.net_obligation_for_foir || 0;
+          
+          document.getElementById('dash-total-emi-found').textContent = fmtINR(totalEMI);
+          document.getElementById('dash-excluded-emi').textContent = fmtINR(excludedEMI);
+          document.getElementById('dash-net-emi').textContent = fmtINR(netEMI);
+          
+          // 4. Enquiries Summary
+          var enq30 = enquiries.total_enquiries_30_days || 0;
+          var enq90 = enquiries.total_enquiries_90_days || 0;
+          
+          document.getElementById('dash-enquiries-30').textContent = enq30;
+          document.getElementById('dash-enquiries-90').textContent = enq90;
+          
+          // Show warning if enquiries are high
+          var warning = document.getElementById('enquiry-30-warning');
+          if(enq30 >= 5){
+            warning.classList.remove('hidden');
+          } else {
+            warning.classList.add('hidden');
+          }
+          
+          // 5. Enable confirmation checkbox
+          document.getElementById('credit-confirmation-checkbox').disabled = false;
+        }
+
+        // Render credit accounts table with new structure
+        function renderCreditAccountsTable(accounts){
+          var tbody = document.getElementById('cibil-accounts-table-body');
+          tbody.innerHTML = '';
+          
+          if(!accounts || accounts.length === 0){
+            tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No accounts found</td></tr>';
+            return;
+          }
+
+          const labelType = function(type){
+            if(!type) return '-';
+            return type.replace(/_/g,' ').toLowerCase().replace(/(^|\s)\w/g, c => c.toUpperCase());
+          };
+          
+          accounts.forEach(function(acc, idx){
+            var row = document.createElement('tr');
+            row.className = 'border-b border-gray-200 hover:bg-gray-50 transition';
+            
+            var statusColor = acc.account_status === 'LIVE' ? 'text-green-700 bg-green-100' : 
+                             acc.account_status === 'CLOSED' ? 'text-gray-700 bg-gray-100' : 
+                             'text-blue-700 bg-blue-100';
+
+            var sanctionAmt = acc.loan_amount || acc.sanction_amount || 0;
+            var currentBal = acc.current_outstanding || 0;
+            var openedDate = acc.opened_date || acc.openDate || '-';
+            var dpdValue = acc.dpd_last_12m || acc.max_dpd_12m || acc.dpd_12m || 0;
+
+            row.innerHTML = `
+              <td class="px-4 py-3 text-sm font-semibold text-gray-900">${labelType(acc.account_type)}</td>
+              <td class="px-4 py-3 text-sm text-gray-700">${acc.ownership || 'Individual'}</td>
+              <td class="px-4 py-3 text-right text-sm text-gray-900">${fmtINR(sanctionAmt)}</td>
+              <td class="px-4 py-3 text-right text-sm text-gray-900">${fmtINR(currentBal)}</td>
+              <td class="px-4 py-3 text-sm text-gray-700">${openedDate}</td>
+              <td class="px-4 py-3 text-sm">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${dpdValue > 0 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${dpdValue > 0 ? 'Y' : 'N'}</span>
+                <span class="ml-2 text-xs text-gray-500">${dpdValue > 0 ? dpdValue + ' DPD' : '0 DPD'}</span>
+              </td>
+              <td class="px-4 py-3 text-sm"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${statusColor}">${acc.account_status || '-'}</span></td>
+            `;
+            
+            tbody.appendChild(row);
+          });
+        }
+
+        // Copilot: Render editable table for CIBIL loan accounts
+        // Columns: Bank, Loan Type, EMI, Outstanding, Open Date, Status
+        // Allow editing EMI, Outstanding, Open Date, Status
+        // Recalculate total EMI on edit
+        function renderLoanAccountsTable(accounts){
+          cibilTableBody.innerHTML = '';
+          var totalLiveEmi = 0;
+          
+          accounts.forEach(function(acc, idx){
+            if(acc.status === 'LIVE') totalLiveEmi += acc.emi;
+            
+            var row = document.createElement('tr');
+            row.className = 'border-b border-gray-200 hover:bg-gray-50';
+            row.innerHTML = `
+              <td class="px-4 py-3 text-sm font-medium text-gray-900">${acc.bank}</td>
+              <td class="px-4 py-3 text-sm text-gray-700">${acc.loanType}</td>
+              <td class="px-4 py-3 text-right">
+                <input type="number" class="emi-input w-20 text-sm border border-gray-300 rounded px-2 py-1" value="${acc.emi}" data-idx="${idx}" onchange="updateTableEMI(this)">
+              </td>
+              <td class="px-4 py-3 text-right">
+                <input type="number" class="outstanding-input w-24 text-sm border border-gray-300 rounded px-2 py-1" value="${acc.outstanding}" data-idx="${idx}">
+              </td>
+              <td class="px-4 py-3">
+                <input type="date" class="date-input text-sm border border-gray-300 rounded px-2 py-1" value="${acc.openDate}" data-idx="${idx}">
+              </td>
+              <td class="px-4 py-3">
+                <select class="status-select text-sm border border-gray-300 rounded px-2 py-1" data-idx="${idx}" onchange="updateTableEMI(this)">
+                  <option value="LIVE" ${acc.status === 'LIVE' ? 'selected' : ''}>LIVE</option>
+                  <option value="CLOSED" ${acc.status === 'CLOSED' ? 'selected' : ''}>CLOSED</option>
+                  <option value="BT" ${acc.status === 'BT' ? 'selected' : ''}>BT (Balance Transfer)</option>
+                </select>
+              </td>
+            `;
+            cibilTableBody.appendChild(row);
+          });
+          
+          totalLiveEmiDisplay.textContent = '₹' + totalLiveEmi.toLocaleString('en-IN');
+          
+          // Copilot: Sum EMI of all LIVE loans
+          // Update monthly obligations value globally
+          // Trigger FOIR recalculation
+          inpMonthlyObligations.value = totalLiveEmi;
+          updateFOIR();
+        }
+
+        // Update table EMI and recalculate FOIR
+        window.updateTableEMI = function(element){
+          var totalLiveEmi = 0;
+          document.querySelectorAll('.status-select').forEach(function(sel, idx){
+            if(sel.value === 'LIVE'){
+              var emiInput = document.querySelectorAll('.emi-input')[idx];
+              totalLiveEmi += parseFloat(emiInput.value) || 0;
+            }
+          });
+          totalLiveEmiDisplay.textContent = '₹' + totalLiveEmi.toLocaleString('en-IN');
+          inpMonthlyObligations.value = totalLiveEmi;
+          updateFOIR();
+        };
+
+        function updateCibilDisplay(){
+          var score = parseFloat(inpCibilScore.value) || 0;
+          var rating = getCibilRating(score);
+          
+          dashCibilScore.textContent = score>0 ? score : '-';
+          dashCibilRating.textContent = rating.label;
+          dashCibilRating.className = 'text-xs font-semibold px-3 py-1 rounded-full ' + rating.color;
+          
+          // Total EMI from table (if table exists, otherwise 0)
+          var totalEmi = document.querySelectorAll('.emi-input').length > 0 ? 
+            Array.from(document.querySelectorAll('.status-select')).reduce((sum, sel, idx) => {
+              if(sel.value === 'LIVE'){
+                sum += parseFloat(document.querySelectorAll('.emi-input')[idx].value) || 0;
+              }
+              return sum;
+            }, 0) : 0;
+          
+          dashTotalEmi.textContent = fmtINR(totalEmi);
+          
+          updateSummary();
+        }
+
+        // ========================================
+        // ELIGIBILITY CALCULATION (STEP 4)
+        // ========================================
+
+        function calculateEligibilityResults(){
+          console.log('🔄 Calculating eligibility...');
+          
+          // Show loading state
+          document.getElementById('eligibility-loading').classList.remove('hidden');
+          document.getElementById('eligibility-results').classList.add('hidden');
+          document.getElementById('eligibility-error').classList.add('hidden');
+          
+          // Gather customer profile
+          var customerProfile = {
+            age: 29,
+            company_category: 'CAT_A',
+            company_name: inpCompanyName.value || 'Unknown',
+            net_salary: parseFloat(inpNetSalary.value) || 0,
+            salary_mode: 'BANK_TRANSFER',
+            employment_type: 'SALARIED',
+            location_type: 'PRIME',
+            city_tier: 'METRO'
+          };
+          
+          // Get parsed CIBIL data
+          var parsedCibilDataStr = document.getElementById('parsed-cibil-data').value;
+          var parsedCibil;
+          
+          if(parsedCibilDataStr){
+            try {
+              parsedCibil = JSON.parse(parsedCibilDataStr);
+            } catch(e){
+              console.error('Failed to parse CIBIL data:', e);
+            }
+          }
+          
+          // Fallback: create minimal CIBIL data if not scanned
+          if(!parsedCibil){
+            var cibilScore = parseFloat(inpCibilScore.value) || 0;
+            var monthlyObligation = parseFloat(inpMonthlyObligations.value) || 0;
+            
+            parsedCibil = {
+              credit_score: {
+                cibil_score: cibilScore,
+                credit_vintage_months: 60
+              },
+              credit_accounts: [],
+              repayment_behavior: {
+                max_dpd_12m: 0,
+                has_writeoff: false,
+                has_settlement: false
+              },
+              enquiries: {
+                total_enquiries_30_days: 1,
+                total_enquiries_90_days: 2
+              },
+              obligations: {
+                net_obligation_for_foir: monthlyObligation
+              },
+              normalized_credit: {
+                risk_band: cibilScore >= 750 ? 'LOW' : cibilScore >= 700 ? 'MEDIUM' : 'HIGH'
+              }
+            };
+          }
+          
+          // Loan request
+          var loanRequest = {
+            product: 'PL',
+            preferred_tenure_years: 5
+          };
+          
+          // Call eligibility API
+          fetch('/api/calculate-eligibility', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              parsed_cibil: parsedCibil,
+              customer_profile: customerProfile,
+              loan_request: loanRequest
+            })
+          })
+          .then(response => response.json())
+          .then(result => {
+            console.log('✅ Eligibility calculated:', result);
+            
+            if(result.error){
+              showEligibilityError(result.error);
+              return;
+            }
+            
+            // Display results
+            displayEligibilityResults(result, customerProfile, parsedCibil);
+          })
+          .catch(err => {
+            console.error('❌ Eligibility API error:', err);
+            showEligibilityError('Unable to calculate eligibility. Please try again.');
+          });
+        }
+
+        function displayEligibilityResults(result, customerProfile, parsedCibil){
+          // Hide loading, show results
+          document.getElementById('eligibility-loading').classList.add('hidden');
+          document.getElementById('eligibility-results').classList.remove('hidden');
+          
+          // Get best bank recommendation
+          var bestBank = result.best_recommendation || result.bank_results.find(b => b.eligible);
+          
+          if(!bestBank){
+            showEligibilityError('No banks found eligible for your profile');
+            return;
+          }
+          
+          // 1. Fill Eligibility Summary
+          document.getElementById('result-net-salary').textContent = fmtINR(customerProfile.net_salary);
+          document.getElementById('result-foir-percent').textContent = (bestBank.foir_percent || 60) + '%';
+          document.getElementById('result-existing-emi').textContent = fmtINR(parsedCibil.obligations?.net_obligation_for_foir || 0);
+          document.getElementById('result-available-emi').textContent = fmtINR(bestBank.available_emi || 0);
+          
+          // 2. Fill Product Eligibility Cards
+          var eligibility = bestBank.eligibility || {};
+          document.getElementById('pl-5y-amount').textContent = fmtINR(eligibility.PL_5Y || 0);
+          document.getElementById('pl-6y-amount').textContent = fmtINR(eligibility.PL_6Y || 0);
+          document.getElementById('od-amount').textContent = fmtINR(eligibility.OD || 0);
+          
+          // 3. Render Bank Recommendations
+          renderBankRecommendations(result.bank_results || []);
+          
+          // 4. Fill Explainability
+          var cibilScore = parsedCibil.credit_score?.cibil_score || 0;
+          document.getElementById('explain-cibil').innerHTML = 
+            cibilScore >= 750 ? '<strong class="text-gray-900">Excellent CIBIL score (' + cibilScore + ')</strong>' :
+            cibilScore >= 700 ? '<strong class="text-gray-900">Good CIBIL score (' + cibilScore + ')</strong>' :
+            '<strong class="text-gray-900">CIBIL score (' + cibilScore + ')</strong>';
+        }
+
+        function renderBankRecommendations(banks){
+          var container = document.getElementById('bank-recommendations');
+          container.innerHTML = '';
+          
+          if(!banks || banks.length === 0){
+            container.innerHTML = '<div class="text-center text-gray-500 py-8">No bank recommendations available</div>';
+            return;
+          }
+          
+          // Filter eligible banks
+          var eligibleBanks = banks.filter(b => b.eligible);
+          
+          if(eligibleBanks.length === 0){
+            container.innerHTML = '<div class="text-center text-gray-500 py-8">No banks currently eligible for your profile</div>';
+            return;
+          }
+          
+          // Render each bank
+          eligibleBanks.forEach(function(bank, index){
+            var rankBadge = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
+            var maxAmount = Math.max(...Object.values(bank.eligibility || {}));
+            var speed = index === 0 ? 'Same Day' : index === 1 ? '2-3 Days' : '3-4 Days';
+            
+            var card = document.createElement('div');
+            card.className = 'bg-white rounded-xl p-6 border-2 ' + 
+              (index === 0 ? 'border-green-300 shadow-lg' : 'border-gray-200 shadow-sm') +
+              ' hover:shadow-md transition';
+            
+            card.innerHTML = `
+              <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="text-3xl">${rankBadge}</div>
+                  <div>
+                    <h6 class="text-lg font-bold text-gray-900">${bank.bank}</h6>
+                    <div class="text-xs text-gray-600">Personal Loan (5 Years)</div>
+                  </div>
+                </div>
+                ${index === 0 ? '<div class="bg-green-100 text-green-700 rounded-lg px-3 py-1 text-xs font-bold">TOP CHOICE</div>' : ''}
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <div class="text-xs text-gray-600 mb-1">Eligible Amount</div>
+                  <div class="text-2xl font-bold text-blue-600">${fmtINR(maxAmount)}</div>
+                </div>
+                <div>
+                  <div class="text-xs text-gray-600 mb-1">Approval Chance</div>
+                  <div class="flex items-center gap-2">
+                    <div class="text-2xl font-bold text-green-600">${bank.approval_probability}%</div>
+                    ${bank.approval_probability >= 80 ? '<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">High</span>' : ''}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-4 text-xs text-gray-600 mb-4">
+                <div class="flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  ${speed}
+                </div>
+                <div class="flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Digital Process
+                </div>
+              </div>
+              
+              <button class="btn-apply-bank w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition flex items-center justify-center gap-2" data-bank="${bank.bank}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                Apply with Expert
+              </button>
+            `;
+            
+            container.appendChild(card);
+          });
+          
+          // Add event listeners to Apply buttons
+          document.querySelectorAll('.btn-apply-bank').forEach(function(btn){
+            btn.addEventListener('click', function(){
+              var bankName = this.dataset.bank;
+              alert('Thank you! Our expert will contact you shortly to process your ' + bankName + ' loan application.');
+            });
+          });
+        }
+
+        function showEligibilityError(message){
+          document.getElementById('eligibility-loading').classList.add('hidden');
+          document.getElementById('eligibility-results').classList.add('hidden');
+          document.getElementById('eligibility-error').classList.remove('hidden');
+          document.getElementById('error-message').textContent = message;
+        }
+
+        // Toggle explainability accordion
+        document.getElementById('btn-explainability-toggle').addEventListener('click', function(){
+          var content = document.getElementById('explainability-content');
+          var icon = document.getElementById('explainability-icon');
+          
+          if(content.classList.contains('hidden')){
+            content.classList.remove('hidden');
+            icon.style.transform = 'rotate(180deg)';
+          } else {
+            content.classList.add('hidden');
+            icon.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Retry button
+        document.getElementById('btn-retry-eligibility').addEventListener('click', function(){
+          calculateEligibilityResults();
+        });
+
+        // Apply with Expert button (main)
+        document.getElementById('btn-apply-expert').addEventListener('click', function(){
+          alert('Thank you! Our expert will contact you shortly to guide you through the application process.');
+        });
 
         function updateSummary(){
           sumName.textContent = inpName.value || '-';
-          sumCibil.textContent = inpCibil.value || '-';
-          sumSalary.textContent = fmtINR(inpSalary.value);
-          sumLoan.textContent = fmtINR(inpLoan.value);
+          sumSalary.textContent = fmtINR(inpNetSalary.value);
+          sumCibil.textContent = inpCibilScore.value || '-';
+          sumLoan.textContent = fmtINR(inpLoanAmount.value);
+          
+          var s = parseFloat(inpNetSalary.value) || 0;
+          var o = parseFloat(inpMonthlyObligations.value) || 0;
+          var foir = s>0 ? ((o/s)*100).toFixed(1) : 0;
+          sumFOIR.textContent = foir + '%';
         }
 
-        // Eligibility evaluation (stricter, more realistic rule)
         function calcEMI(P, annualPercent, nMonths){
           var r = (annualPercent/100)/12;
           if(nMonths<=0) return 0;
@@ -398,21 +2077,19 @@
         }
 
         function evaluateEligibility(){
-          var salary = Number(String(inpSalary.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var oblig = Number(String(inpOblig.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var cibil = Number(String(inpCibil.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var requested = Number(String(inpLoan.value).replace(/[^0-9.-]+/g,'')) || 0;
-          var tenure = Number(inpTenure.value) || 240;
+          var salary = parseFloat(inpNetSalary.value) || 0;
+          var oblig = parseFloat(inpMonthlyObligations.value) || 0;
+          var cibil = parseFloat(inpCibilScore.value) || 0;
+          var requested = parseFloat(inpLoanAmount.value) || 0;
+          var tenure = parseInt(inpTenure.value) || 60;
 
           var obligationRatio = salary>0 ? (oblig/salary) : 1;
           var reasons = [];
 
-          // stricter thresholds
           if(salary < 15000) reasons.push('Monthly salary below minimum threshold (₹15,000)');
-          if(obligationRatio > 0.4) reasons.push('High obligation ratio (' + (obligationRatio*100).toFixed(1) + '%) — ideally <= 40%');
+          if(obligationRatio > 0.4) reasons.push('High obligation ratio (' + (obligationRatio*100).toFixed(1) + '%) — ideally ≤ 40%');
           if(cibil > 0 && cibil < 700) reasons.push('CIBIL score below 700');
 
-          // compute risk-based multiplier by credit tier
           var tierMultiplier = 0;
           if(cibil >= 750) tierMultiplier = 30;
           else if(cibil >= 700) tierMultiplier = 25;
@@ -420,7 +2097,6 @@
           else tierMultiplier = 12;
 
           var maxAllowed = Math.round(salary * tierMultiplier * (1 - obligationRatio));
-          // absolute caps
           var ABS_CAP = 50000000;
           if(maxAllowed > ABS_CAP) maxAllowed = ABS_CAP;
 
@@ -428,7 +2104,6 @@
 
           var eligible = reasons.length===0 && salary>=15000 && cibil>=700 && obligationRatio <= 0.4;
 
-          // compute sample EMI for requested and suggested amounts using a conservative rate based on cibil
           var baseRate = (cibil>=750) ? 9.0 : (cibil>=700) ? 10.5 : (cibil>=650) ? 12.5 : 14.5;
           var requestedEMI = requested>0 ? calcEMI(requested, baseRate, tenure) : null;
           var suggestedEMI = maxAllowed>0 ? calcEMI(maxAllowed, baseRate, tenure) : null;
@@ -442,71 +2117,60 @@
             requestedEMI: requestedEMI,
             suggestedEMI: suggestedEMI,
             baseRate: baseRate,
-            tenure: tenure
+            tenure: tenure,
+            salary: salary
           };
         }
 
         function showModal(result){
-          modalTitle.textContent = result.eligible ? 'Eligible' : 'Not Eligible';
+          modalTitle.textContent = result.eligible ? 'Eligible!' : 'Not Eligible';
           var html = '';
-          html += '<p class="mb-2">Obligation Ratio: <strong>' + (result.obligationRatio*100).toFixed(1) + '%</strong></p>';
-          html += '<p class="mb-2">CIBIL: <strong>' + (result.cibil || '-') + '</strong></p>';
-          html += '<p class="mb-2">Estimated interest rate used: <strong>' + result.baseRate.toFixed(2) + '%</strong></p>';
-          html += '<p class="mb-3">Suggested maximum loan amount: <strong>' + (result.maxAllowed>0 ? fmtINR(result.maxAllowed) : '-') + '</strong></p>';
-          if(result.requestedEMI !== null) html += '<p class="mb-2">Requested EMI estimate: <strong>' + fmtINR(result.requestedEMI) + '/mo</strong> (' + result.tenure + ' months)</p>';
-          if(result.suggestedEMI !== null) html += '<p class="mb-4">Suggested EMI estimate: <strong>' + fmtINR(result.suggestedEMI) + '/mo</strong></p>';
-
+          
+          html += '<div class="space-y-3 text-sm">';
+          html += '<div class="p-3 bg-blue-50 border border-blue-200 rounded"><strong>Your Profile:</strong><br>Salary: ' + fmtINR(result.salary) + ' | FOIR: ' + (result.obligationRatio*100).toFixed(1) + '% | CIBIL: ' + result.cibil + '</div>';
+          html += '<div class="p-3 bg-amber-50 border border-amber-200 rounded"><strong>Interest Rate Used:</strong> ' + result.baseRate.toFixed(2) + '% (based on CIBIL & bank norms)</div>';
+          html += '<div class="p-3 bg-green-50 border border-green-200 rounded"><strong>Available Loan Amount:</strong> ' + fmtINR(result.maxAllowed) + '</div>';
+          
+          if(result.requestedEMI !== null) html += '<div class="text-gray-700"><strong>Requested Loan EMI:</strong> ' + fmtINR(result.requestedEMI) + '/month (' + result.tenure + ' months)</div>';
+          if(result.suggestedEMI !== null) html += '<div class="text-gray-700"><strong>Suggested EMI:</strong> ' + fmtINR(result.suggestedEMI) + '/month</div>';
+          
           if(result.reasons && result.reasons.length){
-            html += '<div class="text-sm text-red-700 mb-3"><strong>Reasons:</strong><ul class="pl-5 mt-1">';
-            result.reasons.forEach(function(r){ html += '<li>' + r + '</li>'; });
+            html += '<div class="text-sm bg-red-50 border border-red-200 rounded p-3"><strong class="text-red-700">Reasons for limitations:</strong><ul class="pl-5 mt-2 text-red-700">';
+            result.reasons.forEach(function(r){ html += '<li>• ' + r + '</li>'; });
             html += '</ul></div>';
           } else {
-            html += '<div class="text-sm text-green-700 mb-3">You meet the basic criteria. Below are tailored offers from partner lenders.</div>';
+            html += '<div class="text-sm bg-green-50 border border-green-200 rounded p-3 text-green-800"><strong>Great!</strong> You meet eligibility criteria. Explore personalized offers below.</div>';
           }
-
-          html += '<div id="offers-list" class="space-y-3">Loading offers ...</div>';
+          
+          html += '<div id="offers-list" class="space-y-2 text-sm text-gray-600">Loading offers...</div>';
+          html += '</div>';
 
           modalBody.innerHTML = html;
-          modalOffers.href = 'LiveOffers.html?eligible=' + (result.eligible ? '1' : '0') + '&max=' + (result.maxAllowed || 0) + '&cibil=' + (result.cibil || 0);
           modal.classList.remove('hidden');
           modal.classList.add('flex');
 
-          // fetch mock offers and display best matches
-          fetch('mock-api/offers.json').then(function(r){ return r.json(); }).then(function(list){
-            var userCibil = result.cibil || 0;
-            var salary = Number(String(inpSalary.value).replace(/[^0-9.-]+/g,'')) || 0;
-            var max = result.maxAllowed || 0;
-            var matches = list.filter(function(o){ return userCibil >= o.minCibil && salary >= o.minSalary && max > 0; });
-            // sort by interestRate ascending
-            matches.sort(function(a,b){ return a.interestRate - b.interestRate; });
-            var out = '';
-            if(matches.length===0){ out = '<div class="text-sm text-gray-600">No matching offers found for your profile. Try reducing requested amount or improving credit score.</div>'; }
-            else {
-              matches.slice(0,5).forEach(function(o){
-                var emiForMax = calcEMI(max, o.interestRate, result.tenure);
-                out += '<div class="p-3 border rounded flex justify-between items-center">';
-                out += '<div><div class="font-medium">' + o.bank + '</div><div class="text-xs text-gray-500">Interest: ' + o.interestRate.toFixed(2) + '%</div></div>';
-                out += '<div class="text-right"><div class="text-sm">Max loan: <strong>' + fmtINR(max) + '</strong></div><div class="text-sm">Est. EMI: <strong>' + fmtINR(emiForMax) + '/mo</strong></div></div>';
-                out += '</div>';
-              });
-            }
-            var container = document.getElementById('offers-list');
-            if(container) container.innerHTML = out;
-          }).catch(function(){
-            var container = document.getElementById('offers-list');
-            if(container) container.innerHTML = '<div class="text-sm text-red-600">Unable to load offers at this time.</div>';
-          });
+          setTimeout(function(){
+            var offers = [
+              {bank: 'Bajaj Finserv', rate: result.baseRate-0.5, maxLoan: result.maxAllowed},
+              {bank: 'HDFC Bank', rate: result.baseRate, maxLoan: result.maxAllowed*0.95},
+              {bank: 'Tata Capital', rate: result.baseRate+0.5, maxLoan: result.maxAllowed*1.05}
+            ];
+            
+            var out = '<div class="font-semibold mb-2">Recommended Banks:</div>';
+            offers.forEach(function(o, idx){
+              var emi = calcEMI(o.maxLoan, o.rate, result.tenure);
+              out += '<div class="p-3 border rounded bg-gradient-to-r from-blue-50 to-white">';
+              out += '<div class="font-medium text-gray-900">' + (idx+1) + '. ' + o.bank + '</div>';
+              out += '<div class="text-xs text-gray-600 mt-1">Interest: ' + o.rate.toFixed(2) + '% | Max: ' + fmtINR(o.maxLoan) + ' | Est. EMI: ' + fmtINR(emi) + '/mo</div>';
+              out += '<button class="mt-2 bg-blue-600 text-white text-xs px-3 py-1 rounded hover:bg-blue-700 transition">Apply with Expert</button>';
+              out += '</div>';
+            });
+            
+            document.getElementById('offers-list').innerHTML = out;
+          }, 500);
         }
 
         modalClose.addEventListener('click', function(){ modal.classList.add('hidden'); modal.classList.remove('flex'); });
-
-        // live updates
-        inpOblig.addEventListener('input', updateObligation);
-        inpSalary.addEventListener('input', function(){ updateObligation(); updateSummary(); });
-        inpCibil.addEventListener('input', updateCredit);
-        inpName.addEventListener('input', updateSummary);
-        inpLoan.addEventListener('input', updateSummary);
-        inpTenure.addEventListener('change', updateSummary);
 
         btnNext.addEventListener('click', function(){
           if(current < total){
@@ -514,7 +2178,6 @@
             current++;
             showStep(current);
           } else {
-            // final submit: evaluate eligibility and show modal
             updateSummary();
             var result = evaluateEligibility();
             showModal(result);
@@ -523,8 +2186,9 @@
 
         btnBack.addEventListener('click', function(){ if(current>1){ current--; showStep(current); } });
 
-        // initialize
-        updateObligation(); updateCredit(); updateSummary();
+        // Initialize
+        updateFOIR();
+        updateSummary();
         showStep(current);
       })();
     </script>
