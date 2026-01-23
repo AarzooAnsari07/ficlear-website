@@ -48,24 +48,3 @@
     </div>
   </div>
 </nav>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  var menuBtn = document.getElementById('mobile-menu-btn');
-  var mobileMenu = document.getElementById('mobile-menu');
-  
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', function() {
-      mobileMenu.classList.toggle('hidden');
-    });
-    
-    // Close menu when clicking on a link
-    var menuLinks = mobileMenu.querySelectorAll('a');
-    menuLinks.forEach(function(link) {
-      link.addEventListener('click', function() {
-        mobileMenu.classList.add('hidden');
-      });
-    });
-  }
-});
-</script>
